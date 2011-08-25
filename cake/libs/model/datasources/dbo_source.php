@@ -2721,13 +2721,17 @@ class DboSource extends DataSource {
 			return null;
 		}
 
-		if (!isset($this->columns[$type])) {
+		if (substr($type, 0, 4) == 'enum') {
+			unset($column['length']);
+			$real = $column;
+			$out = $this->name($name) . ' ' . $type;
+		} else if (!isset($this->columns[$type])) {
 			trigger_error(sprintf(__('Column type %s does not exist', true), $type), E_USER_WARNING);
 			return null;
+		} else {
+			$real = $this->columns[$type];
+			$out = $this->name($name) . ' ' . $real['name'];
 		}
-
-		$real = $this->columns[$type];
-		$out = $this->name($name) . ' ' . $real['name'];
 
 		if (isset($real['limit']) || isset($real['length']) || isset($column['limit']) || isset($column['length'])) {
 			if (isset($column['length'])) {

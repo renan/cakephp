@@ -45,7 +45,7 @@ class TestPluginCommentFixture extends CakeTestFixture {
 		'article_id' => array('type' => 'integer', 'null'=>false),
 		'user_id' => array('type' => 'integer', 'null'=>false),
 		'comment' => 'text',
-		'published' => array('type' => 'string', 'length' => 1, 'default' => 'N'),
+		'status' => array('type' => 'enum(\'published\',\'rejected\',\'inactive\')', 'length' => 9, 'default' => 'inactive'),
 		'created' => 'datetime',
 		'updated' => 'datetime'
 	);
@@ -57,11 +57,11 @@ class TestPluginCommentFixture extends CakeTestFixture {
  * @access public
  */
 	var $records = array(
-		array('id' => 1, 'article_id' => 1, 'user_id' => 2, 'comment' => 'First Comment for First Plugin Article', 'published' => 'Y', 'created' => '2008-09-24 10:45:23', 'updated' => '2008-09-24 10:47:31'),
-		array('id' => 2, 'article_id' => 1, 'user_id' => 4, 'comment' => 'Second Comment for First Plugin Article', 'published' => 'Y', 'created' => '2008-09-24 10:47:23', 'updated' => '2008-09-24 10:49:31'),
-		array('id' => 3, 'article_id' => 1, 'user_id' => 1, 'comment' => 'Third Comment for First Plugin Article', 'published' => 'Y', 'created' => '2008-09-24 10:49:23', 'updated' => '2008-09-24 10:51:31'),
-		array('id' => 4, 'article_id' => 1, 'user_id' => 1, 'comment' => 'Fourth Comment for First Plugin Article', 'published' => 'N', 'created' => '2008-09-24 10:51:23', 'updated' => '2008-09-24 10:53:31'),
-		array('id' => 5, 'article_id' => 2, 'user_id' => 1, 'comment' => 'First Comment for Second Plugin Article', 'published' => 'Y', 'created' => '2008-09-24 10:53:23', 'updated' => '2008-09-24 10:55:31'),
-		array('id' => 6, 'article_id' => 2, 'user_id' => 2, 'comment' => 'Second Comment for Second Plugin Article', 'published' => 'Y', 'created' => '2008-09-24 10:55:23', 'updated' => '2008-09-24 10:57:31')
+		array('id' => 1, 'article_id' => 1, 'user_id' => 2, 'comment' => 'First Comment for First Plugin Article', 'status' => 'published', 'created' => '2008-09-24 10:45:23', 'updated' => '2008-09-24 10:47:31'),
+		array('id' => 2, 'article_id' => 1, 'user_id' => 4, 'comment' => 'Second Comment for First Plugin Article', 'status' => 'published', 'created' => '2008-09-24 10:47:23', 'updated' => '2008-09-24 10:49:31'),
+		array('id' => 3, 'article_id' => 1, 'user_id' => 1, 'comment' => 'Third Comment for First Plugin Article', 'status' => 'published', 'created' => '2008-09-24 10:49:23', 'updated' => '2008-09-24 10:51:31'),
+		array('id' => 4, 'article_id' => 1, 'user_id' => 1, 'comment' => 'Fourth Comment for First Plugin Article', 'status' => 'inactive', 'created' => '2008-09-24 10:51:23', 'updated' => '2008-09-24 10:53:31'),
+		array('id' => 5, 'article_id' => 2, 'user_id' => 1, 'comment' => 'First Comment for Second Plugin Article', 'status' => 'published', 'created' => '2008-09-24 10:53:23', 'updated' => '2008-09-24 10:55:31'),
+		array('id' => 6, 'article_id' => 2, 'user_id' => 2, 'comment' => 'Second Comment for Second Plugin Article', 'status' => 'published', 'created' => '2008-09-24 10:55:23', 'updated' => '2008-09-24 10:57:31')
 	);
 }
