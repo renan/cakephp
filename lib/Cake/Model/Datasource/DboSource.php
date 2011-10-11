@@ -2855,13 +2855,17 @@ class DboSource extends DataSource {
 			return null;
 		}
 
-		if (!isset($this->columns[$type])) {
+		if (substr($type, 0, 4) == 'enum') {
+			unset($length, $column['length']);
+			$real = $column;
+			$out = $this->name($name) . ' ' . $type;
+		} else if (!isset($this->columns[$type])) {
 			trigger_error(__d('cake_dev', 'Column type %s does not exist', $type), E_USER_WARNING);
 			return null;
+		} else {
+			$real = $this->columns[$type];
+			$out = $this->name($name) . ' ' . $real['name'];
 		}
-
-		$real = $this->columns[$type];
-		$out = $this->name($name) . ' ' . $real['name'];
 
 		if (isset($column['length'])) {
 			$length = $column['length'];
