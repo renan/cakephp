@@ -23,7 +23,7 @@ App::uses('I18n', 'I18n');
  * Translate behavior
  *
  * @package       Cake.Model.Behavior
- * @link http://book.cakephp.org/view/1328/Translate
+ * @link http://book.cakephp.org/2.0/en/core-libraries/behaviors/translate.html
  */
 class TranslateBehavior extends ModelBehavior {
 
@@ -169,21 +169,16 @@ class TranslateBehavior extends ModelBehavior {
 						$query['fields'][] = 'i18n_'.$field;
 					}
 					$query['joins'][] = array(
-						'type' => 'LEFT',
+						'type' => 'INNER',
 						'alias' => 'I18n__'.$field,
 						'table' => $joinTable,
 						'conditions' => array(
 							$model->alias . '.' . $model->primaryKey => $db->identifier("I18n__{$field}.foreign_key"),
 							'I18n__'.$field.'.model' => $model->name,
-							'I18n__'.$field.'.'.$RuntimeModel->displayField => $aliasField
+							'I18n__'.$field.'.'.$RuntimeModel->displayField => $aliasField,
+							'I18n__'.$field.'.locale' => $locale
 						)
 					);
-
-					if (is_string($query['conditions'])) {
-						$query['conditions'] = $db->conditions($query['conditions'], true, false, $model) . ' AND '.$db->name('I18n__'.$field.'.locale').' = \''.$locale.'\'';
-					} else {
-						$query['conditions'][$db->name("I18n__{$field}.locale")] = $locale;
-					}
 				}
 			}
 		}
