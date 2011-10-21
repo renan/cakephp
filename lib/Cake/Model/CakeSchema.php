@@ -594,7 +594,7 @@ class CakeSchema extends Object {
 			if (substr($value['type'], 0, 4) == 'enum') {
 				// just don't throw the error, ignore it
 			} else if (!isset($db->columns[$value['type']])) {
-				trigger_error(__d('cake_dev', 'Schema generation error: invalid column type %s does not exist in DBO', $value['type']), E_USER_NOTICE);
+				trigger_error(__d('cake_dev', 'Schema generation error: invalid column type %s for %s.%s does not exist in DBO', $value['type'], $Obj->name, $name), E_USER_NOTICE);
 				continue;
 			} else {
 				$defaultCol = $db->columns[$value['type']];
