@@ -11,21 +11,21 @@
  *
  * @copyright     Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
- * @package       Cake.View.Errors
+ * @package       cake.libs.view.templates.layouts.email.html
  * @since         CakePHP(tm) v 0.10.0.1076
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 ?>
-<h2><?php echo $name; ?></h2>
-<p class="error">
-	<strong><?php echo __d('cake', 'Error'); ?>: </strong>
-	<?php printf(
-		__d('cake', 'The requested address %s was not found on this server.'),
-		"<strong>'{$url}'</strong>"
-	); ?>
-</p>
-<?php
-if (Configure::read('debug') > 0 ):
-	echo $this->element('exception_stack_trace');
-endif;
-?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+
+<html>
+<head>
+	<title><?php echo $title_for_layout;?></title>
+</head>
+
+<body>
+	<?php echo $content_for_layout;?>
+
+	<p>このメールは <a href="http://cakephp.org">CakePHP Framework</a> を利用して送信しました。</p>
+</body>
+</html>
