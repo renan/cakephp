@@ -208,9 +208,9 @@ function pluginSplit($name, $dotAppend = false, $plugin = null) {
  */
 function pr($var) {
 	if (Configure::read('debug') > 0) {
-		echo '<pre>';
+		echo '<xmp>';
 		print_r($var);
-		echo '</pre>';
+		echo '</xmp>';
 	}
 }
 
