@@ -16,10 +16,7 @@
  * @since         CakePHP(tm) v 0.10.0.1076
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
-if (!class_exists('Multibyte')) {
-	App::import('Core', 'Multibyte');
-}
-
+App::uses('Multibyte', 'I18n');
 App::uses('AppHelper', 'View/Helper');
 
 /**
@@ -685,7 +682,7 @@ class TimeHelper extends AppHelper {
 /**
  * Returns gmt as a UNIX timestamp.
  *
- * @param string $string Datetime string
+ * @param string $string UNIX timestamp or a valid strtotime() date string
  * @return integer UNIX timestamp
  * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/time.html#formatting
  */
