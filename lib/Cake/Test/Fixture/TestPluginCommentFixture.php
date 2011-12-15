@@ -38,8 +38,8 @@ class TestPluginCommentFixture extends CakeTestFixture {
  */
 	public $fields = array(
 		'id' => array('type' => 'integer', 'key' => 'primary'),
-		'article_id' => array('type' => 'integer', 'null'=>false),
-		'user_id' => array('type' => 'integer', 'null'=>false),
+		'article_id' => array('type' => 'integer', 'null' => false),
+		'user_id' => array('type' => 'integer', 'null' => false),
 		'comment' => 'text',
 		'status' => array('type' => 'enum(\'published\',\'rejected\',\'inactive\')', 'length' => 9, 'default' => 'inactive'),
 		'created' => 'datetime',

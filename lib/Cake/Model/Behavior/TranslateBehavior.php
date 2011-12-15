@@ -38,7 +38,7 @@ class TranslateBehavior extends ModelBehavior {
  * Callback
  *
  * $config for TranslateBehavior should be
- * array( 'fields' => array('field_one',
+ * array('fields' => array('field_one',
  * 'field_two' => 'FieldAssoc', 'field_three'))
  *
  * With above example only one permanent hasMany will be joined (for field_two
@@ -420,7 +420,7 @@ class TranslateBehavior extends ModelBehavior {
 				foreach (array('hasOne', 'hasMany', 'belongsTo', 'hasAndBelongsToMany') as $type) {
 					if (isset($model->{$type}[$association]) || isset($model->__backAssociation[$type][$association])) {
 						trigger_error(
-							__d('cake_dev', 'Association %s is already binded to model %s', $association, $model->alias),
+							__d('cake_dev', 'Association %s is already bound to model %s', $association, $model->alias),
 							E_USER_ERROR
 						);
 						return false;
