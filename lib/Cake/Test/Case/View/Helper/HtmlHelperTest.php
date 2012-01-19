@@ -185,11 +185,23 @@ class HtmlHelperTest extends CakeTestCase {
  * @return void
  */
 	public function testLink() {
+		Router::connect('/:controller/:action/*');
+
 		$this->Html->request->webroot = '';
 
 		$result = $this->Html->link('/home');
 		$expected = array('a' => array('href' => '/home'), 'preg:/\/home/', '/a');
 		$this->assertTags($result, $expected);
+
+		$result = $this->Html->link(array('action' => 'login', '<[You]>'));
+		$expected = array(
+			'a' => array('href' => '/login/%3C%5BYou%5D%3E'),
+			'preg:/\/login\/&lt;\[You\]&gt;/',
+			'/a'
+		);
+		$this->assertTags($result, $expected);
+
+		Router::reload();
 
 		$result = $this->Html->link('Posts', array('controller' => 'posts', 'action' => 'index', 'full_base' => true));
 		$expected = array('a' => array('href' => FULL_BASE_URL . '/posts'), 'Posts', '/a');
@@ -573,7 +585,7 @@ class HtmlHelperTest extends CakeTestCase {
 		Configure::write('debug', 2);
 		Configure::write('Asset.timestamp', true);
 
-		touch(WWW_ROOT . 'js' . DS. '__cake_js_test.js');
+		touch(WWW_ROOT . 'js' . DS . '__cake_js_test.js');
 		$timestamp = substr(strtotime('now'), 0, 8);
 
 		$result = $this->Html->script('__cake_js_test', array('inline' => true, 'once' => false));
@@ -583,7 +595,7 @@ class HtmlHelperTest extends CakeTestCase {
 		Configure::write('Asset.timestamp', 'force');
 		$result = $this->Html->script('__cake_js_test', array('inline' => true, 'once' => false));
 		$this->assertRegExp('/__cake_js_test.js\?' . $timestamp . '[0-9]{2}"/', $result, 'Timestamp value not found %s');
-		unlink(WWW_ROOT . 'js' . DS. '__cake_js_test.js');
+		unlink(WWW_ROOT . 'js' . DS . '__cake_js_test.js');
 		Configure::write('Asset.timestamp', false);
 	}
 
@@ -1508,6 +1520,10 @@ class HtmlHelperTest extends CakeTestCase {
 			}
 		}
 		$this->assertEquals($helper->parseAttributes(array('compact')), ' compact="compact"');
+
+		$attrs = array('class' => array('foo', 'bar'));
+		$expected = ' class="foo bar"';
+		$this->assertEquals(' class="foo bar"', $helper->parseAttributes($attrs));
 
 		$helper = new Html5TestHelper($this->View);
 		$expected = ' require';

@@ -877,7 +877,7 @@ class DispatcherTest extends CakeTestCase {
  */
 	public function testAutomaticPluginDispatch() {
 		$_POST = array();
-		$_SERVER['SCRIPT_NAME'] = '/cake/repo/branches/1.2.x.x/index.php';
+		$_SERVER['PHP_SELF'] = '/cake/repo/branches/1.2.x.x/index.php';
 
 		Router::reload();
 		$Dispatcher = new TestDispatcher();
@@ -1360,6 +1360,7 @@ class DispatcherTest extends CakeTestCase {
  * - Test simple views
  * - Test views with nocache tags
  * - Test requests with named + passed params.
+ * - Test requests with query string params
  * - Test themed views.
  *
  * @return array
@@ -1373,6 +1374,7 @@ class DispatcherTest extends CakeTestCase {
 			array('TestCachedPages/test_nocache_tags'),
 			array('test_cached_pages/view/param/param'),
 			array('test_cached_pages/view/foo:bar/value:goo'),
+			array('test_cached_pages/view?q=cakephp'),
 			array('test_cached_pages/themed'),
 		);
 	}
@@ -1405,7 +1407,7 @@ class DispatcherTest extends CakeTestCase {
 		$out = ob_get_clean();
 
 		ob_start();
-		$dispatcher->cached($request->here);
+		$dispatcher->cached($request->here());
 		$cached = ob_get_clean();
 
 		$result = str_replace(array("\t", "\r\n", "\n"), "", $out);
@@ -1414,7 +1416,7 @@ class DispatcherTest extends CakeTestCase {
 
 		$this->assertEquals($expected, $result);
 
-		$filename = $this->__cachePath($request->here);
+		$filename = $this->__cachePath($request->here());
 		unlink($filename);
 	}
 
