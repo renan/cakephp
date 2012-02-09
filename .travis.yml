@@ -20,3 +20,10 @@ before_script:
 
 script:
   - ./lib/Cake/Console/cake testsuite core AllTests --stderr
+
+notifications:
+  email: false
+
+branches:
+  only:
+    - 2.0-travis
