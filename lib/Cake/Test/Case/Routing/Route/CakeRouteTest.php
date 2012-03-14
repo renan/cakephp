@@ -5,12 +5,12 @@
  * PHP 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       Cake.Test.Case.Routing.Route
  * @since         CakePHP(tm) v 2.0
@@ -404,6 +404,26 @@ class CakeRouteTest extends CakeTestCase {
 	}
 
 /**
+ * Ensure that keys at named parameters are urldecoded
+ *
+ * @return void
+ */
+	public function testParseNamedKeyUrlDecode() {
+		Router::connectNamed(true);
+		$route = new CakeRoute('/:controller/:action/*', array('plugin' => null));
+
+		// checking /post/index/user[0]:a/user[1]:b
+		$result = $route->parse('/posts/index/user%5B0%5D:a/user%5B1%5D:b');
+		$this->assertArrayHasKey('user', $result['named']);
+		$this->assertEquals(array('a', 'b'), $result['named']['user']);
+
+		// checking /post/index/user[]:a/user[]:b
+		$result = $route->parse('/posts/index/user%5B%5D:a/user%5B%5D:b');
+		$this->assertArrayHasKey('user', $result['named']);
+		$this->assertEquals(array('a', 'b'), $result['named']['user']);
+	}
+
+/**
  * test that named params with null/false are excluded
  *
  * @return void
@@ -486,6 +506,28 @@ class CakeRouteTest extends CakeTestCase {
 		$result = $route->parse('/admin/posts');
 		$this->assertEquals($result['controller'], 'posts');
 		$this->assertEquals($result['action'], 'index');
+	}
+
+/**
+ * Test that :key elements are urldecoded
+ *
+ * @return void
+ */
+	public function testParseUrlDecodeElements() {
+		$route = new Cakeroute(
+			'/:controller/:slug',
+			array('action' => 'view')
+		);
+		$route->compile();
+		$result = $route->parse('/posts/%E2%88%82%E2%88%82');
+		$this->assertEquals($result['controller'], 'posts');
+		$this->assertEquals($result['action'], 'view');
+		$this->assertEquals($result['slug'], '∂∂');
+
+		$result = $route->parse('/posts/∂∂');
+		$this->assertEquals($result['controller'], 'posts');
+		$this->assertEquals($result['action'], 'view');
+		$this->assertEquals($result['slug'], '∂∂');
 	}
 
 /**

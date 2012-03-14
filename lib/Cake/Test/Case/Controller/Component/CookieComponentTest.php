@@ -5,12 +5,12 @@
  * PHP 5
  *
  * CakePHP(tm) Tests <http://book.cakephp.org/view/1196/Testing>
- * Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice
  *
- * @copyright     Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://book.cakephp.org/view/1196/Testing CakePHP(tm) Tests
  * @package       Cake.Test.Case.Controller.Component
  * @since         CakePHP(tm) v 1.2.0.5435
@@ -472,6 +472,21 @@ class CookieComponentTest extends CakeTestCase {
 	}
 
 /**
+ * Test reading empty values.
+ */
+	public function testReadEmpty() {
+		$_COOKIE['CakeTestCookie'] = array(
+		  'JSON' => '{"name":"value"}',
+		  'Empty' => '',
+		  'String' => '{"somewhat:"broken"}'
+		);
+		$this->assertEqual(array('name' => 'value'), $this->Cookie->read('JSON'));
+		$this->assertEqual('value', $this->Cookie->read('JSON.name'));
+		$this->assertEqual('', $this->Cookie->read('Empty'));
+		$this->assertEqual('{"somewhat:"broken"}', $this->Cookie->read('String'));
+	}
+
+/**
  * test that no error is issued for non array data.
  *
  * @return void
@@ -482,6 +497,7 @@ class CookieComponentTest extends CakeTestCase {
 
 		$this->assertNull($this->Cookie->read('value'));
 	}
+
 
 /**
  * test that deleting a top level keys kills the child elements too.

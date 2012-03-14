@@ -5,12 +5,12 @@
  * PHP 5
  *
  * CakePHP(tm) Tests <http://book.cakephp.org/view/1196/Testing>
- * Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice
  *
- * @copyright     Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://book.cakephp.org/view/1196/Testing CakePHP(tm) Tests
  * @package       Cake.Test.Case.View.Helper
  * @since         CakePHP(tm) v 1.2.0.4206
@@ -336,6 +336,26 @@ podeís adquirirla.</span></p>
 		$expected = 'Text with a partial <iframe src="http://www.cakephp.org" /> link';
 		$result = $this->Text->autoLinkUrls($text, array('escape' => false));
 		$this->assertEquals($expected, $result);
+
+		$text = 'Text with a url <a href="http://www.not-working-www.com">www.not-working-www.com</a> and more';
+		$expected = 'Text with a url <a href="http://www.not-working-www.com">www.not-working-www.com</a> and more';
+		$result = $this->Text->autoLinkUrls($text);
+		$this->assertEquals($expected, $result);
+
+		$text = 'Text with a url www.not-working-www.com and more';
+		$expected = 'Text with a url <a href="http://www.not-working-www.com">www.not-working-www.com</a> and more';
+		$result = $this->Text->autoLinkUrls($text);
+		$this->assertEquals($expected, $result);
+
+		$text = 'Text with a url http://www.not-working-www.com and more';
+		$expected = 'Text with a url <a href="http://www.not-working-www.com">http://www.not-working-www.com</a> and more';
+		$result = $this->Text->autoLinkUrls($text);
+		$this->assertEquals($expected, $result);
+
+		$text = 'Text with a url http://www.www.not-working-www.com and more';
+		$expected = 'Text with a url <a href="http://www.www.not-working-www.com">http://www.www.not-working-www.com</a> and more';
+		$result = $this->Text->autoLinkUrls($text);
+		$this->assertEquals($expected, $result);
 	}
 
 /**
@@ -424,7 +444,7 @@ podeís adquirirla.</span></p>
 		$expected = $text;
 		$result = $this->Text->excerpt($text, $phrase, 13, '...');
 		$this->assertEquals($expected, $result);
-		
+
 		$text = 'aaaaaaaaaaaaaaaaaaaaaaaabbbbbbbbaaaaaaaaaaaaaaaaaaaaaaaa';
 		$phrase = 'bbbbbbbb';
 		$result = $this->Text->excerpt($text, $phrase, 10);

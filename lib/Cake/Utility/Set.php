@@ -5,12 +5,12 @@
  * PHP 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       Cake.Utility
  * @since         CakePHP(tm) v 1.2.0
@@ -30,9 +30,12 @@ class Set {
  * This function can be thought of as a hybrid between PHP's array_merge and array_merge_recursive. The difference
  * to the two is that if an array key contains another array then the function behaves recursive (unlike array_merge)
  * but does not do if for keys containing strings (unlike array_merge_recursive).
- * See the unit test for more information.
  *
- * Note: This function will work with an unlimited amount of arguments and typecasts non-array parameters into arrays.
+ * Since this method emulates `array_merge`, it will re-order numeric keys.  When combined with out of
+ * order numeric keys containing arrays, results can be lossy.
+ *
+ * Note: This function will work with an unlimited amount of arguments and typecasts non-array 
+ * parameters into arrays.
  *
  * @param array $arr1 Array to be merged
  * @param array $arr2 Array to merge with
@@ -316,8 +319,9 @@ class Set {
 	}
 
 /**
- * Implements partial support for XPath 2.0. If $path is an array or $data is empty it the call
- * is delegated to Set::classicExtract.
+ * Implements partial support for XPath 2.0. If $path does not contain a '/' the call
+ * is delegated to Set::classicExtract(). Also the $path and $data arguments are 
+ * reversible.
  *
  * #### Currently implemented selectors:
  *

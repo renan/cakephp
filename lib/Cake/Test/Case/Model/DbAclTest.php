@@ -5,12 +5,12 @@
  * PHP 5
  *
  * CakePHP(tm) Tests <http://book.cakephp.org/view/1196/Testing>
- * Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice
  *
- * @copyright     Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://book.cakephp.org/view/1196/Testing CakePHP(tm) Tests
  * @package       Cake.Test.Case.Model
  * @since         CakePHP(tm) v 1.2.0.4206
@@ -316,7 +316,8 @@ class AclNodeTest extends CakeTestCase {
 		$expected = array(4);
 		$this->assertEquals($expected, $result);
 	}
-	/**
+
+/**
  * testNodeObjectFind method
  *
  * @return void
@@ -358,5 +359,30 @@ class AclNodeTest extends CakeTestCase {
 			array('DbAcoTest' => array('id' => '2', 'parent_id' => '1', 'model' => null, 'foreign_key' => null, 'alias' => 'Pages', 'lft' => '2', 'rght' => '3'), 'DbAroTest' => array())
 		);
 		$this->assertEquals($expected, $result);
+	}
+
+/**
+ * testNodeActionAuthorize method
+ *
+ * @return void
+ */
+	public function testNodeActionAuthorize() {
+		App::build(array(
+			'plugins' => array(CAKE . 'Test' . DS . 'test_app' . DS . 'Plugin' . DS)
+		), App::RESET);
+		CakePlugin::load('TestPlugin');
+
+		$Aro = new DbAroTest();
+		$Aro->create();
+		$Aro->save(array('model' => 'TestPluginAuthUser', 'foreign_key' => 1));
+		$result = $Aro->id;
+		$expected = 5;
+		$this->assertEquals($expected, $result);
+
+		$node = $Aro->node(array('TestPlugin.TestPluginAuthUser' => array('id' => 1, 'user' => 'mariano')));
+		$result = Set::extract($node, '0.DbAroTest.id');
+		$expected = $Aro->id;
+		$this->assertEquals($expected, $result);
+		CakePlugin::unload('TestPlugin');
 	}
 }

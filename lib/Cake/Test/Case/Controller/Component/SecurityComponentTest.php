@@ -5,12 +5,12 @@
  * PHP 5
  *
  * CakePHP(tm) Tests <http://book.cakephp.org/view/1196/Testing>
- * Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice
  *
- * @copyright     Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://book.cakephp.org/view/1196/Testing CakePHP(tm) Tests
  * @package       Cake.Test.Case.Controller.Component
  * @since         CakePHP(tm) v 1.2.0.5435
@@ -905,6 +905,30 @@ class SecurityComponentTest extends CakeTestCase {
 			'_Token' => compact('key', 'fields', 'unlocked')
 		);
 
+		$result = $this->Controller->Security->validatePost($this->Controller);
+		$this->assertTrue($result);
+	}
+
+/**
+ * Test that values like Foo.0.1
+ *
+ * @return void
+ */
+	public function testValidateNestedNumericSets() {
+	
+		$this->Controller->Security->startup($this->Controller);
+		$key = $this->Controller->request->params['_Token']['key'];
+		$unlocked = '';
+		$hashFields = array('TaxonomyData');
+		$fields = urlencode(Security::hash(serialize($hashFields) . $unlocked . Configure::read('Security.salt')));
+
+		$this->Controller->request->data = array(
+			'TaxonomyData' => array(
+				1 => array(array(2)),
+				2 => array(array(3))
+			),
+			'_Token' => compact('key', 'fields', 'unlocked')
+		);
 		$result = $this->Controller->Security->validatePost($this->Controller);
 		$this->assertTrue($result);
 	}

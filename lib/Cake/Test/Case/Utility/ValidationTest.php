@@ -5,12 +5,12 @@
  * PHP Version 5.x
  *
  * CakePHP(tm) Tests <http://book.cakephp.org/view/1196/Testing>
- * Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The Open Group Test Suite License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://book.cakephp.org/view/1196/Testing CakePHP(tm) Tests
  * @package       Cake.Test.Case.Utility
  * @since         CakePHP(tm) v 1.2.0.4206
@@ -1738,6 +1738,7 @@ class ValidationTest extends CakeTestCase {
 		$this->assertTrue(Validation::url('ftp://www.cakephp.org/pub/cake'));
 		$this->assertTrue(Validation::url('ftp://cakephp.org/pub/cake'));
 		$this->assertTrue(Validation::url('ftp://192.168.0.1/pub/cake'));
+		$this->assertTrue(Validation::url('sftp://192.168.0.1/pub/cake'));
 		$this->assertFalse(Validation::url('ftps://256.168.0.1/pub/cake'));
 		$this->assertFalse(Validation::url('ftp://256.168.0.1/pub/cake'));
 		$this->assertTrue(Validation::url('https://my.domain.com/gizmo/app?class=MySip;proc=start'));

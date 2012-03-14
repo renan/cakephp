@@ -5,12 +5,12 @@
  * PHP 5
  *
  * CakePHP(tm) Tests <http://book.cakephp.org/view/1196/Testing>
- * Copyright 2005-2011, Cake Software Foundation, Inc.
+ * Copyright 2005-2012, Cake Software Foundation, Inc.
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice
  *
- * @copyright     Copyright 2005-2011, Cake Software Foundation, Inc.
+ * @copyright     Copyright 2005-2012, Cake Software Foundation, Inc.
  * @link          http://book.cakephp.org/view/1196/Testing CakePHP(tm) Tests
  * @package       Cake.Test.Case.View.Helper
  * @since         CakePHP(tm) v 1.2.0.4206
@@ -1432,6 +1432,31 @@ class FormHelperTest extends CakeTestCase {
 		$this->Form->unlockField('Contact.name');
 		$this->Form->unlockField('Contact.id');
 		$this->assertEquals(array(), $this->Form->fields);
+	}
+
+/**
+ * testTagIsInvalid method
+ *
+ * @return void
+ */
+	public function testTagIsInvalid() {
+		$Contact = ClassRegistry::getObject('Contact');
+		$Contact->validationErrors[0]['email'] =  array('Please provide an email');
+
+		$this->Form->setEntity('Contact.0.email');
+		$result = $this->Form->tagIsInvalid();
+		$expected = array('Please provide an email');
+		$this->assertEquals($expected, $result);
+
+		$this->Form->setEntity('Contact.1.email');
+		$result = $this->Form->tagIsInvalid();
+		$expected = false;
+		$this->assertIdentical($expected, $result);
+
+		$this->Form->setEntity('Contact.0.name');
+		$result = $this->Form->tagIsInvalid();
+		$expected = false;
+		$this->assertIdentical($expected, $result);
 	}
 
 /**

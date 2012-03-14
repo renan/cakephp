@@ -5,12 +5,12 @@
  * PHP 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       Cake.Network.Email
  * @since         CakePHP(tm) v 2.0.0
@@ -686,6 +686,9 @@ class CakeEmail {
 			if ($email === $alias) {
 				$return[] = $email;
 			} else {
+				if (strpos($alias, ',') !== false) {
+					$alias = '"' . $alias . '"';
+				}
 				$return[] = sprintf('%s <%s>', $this->_encode($alias), $email);
 			}
 		}
@@ -1240,9 +1243,14 @@ class CakeEmail {
 /**
  * Attach non-embedded files by adding file contents inside boundaries.
  *
+ * @param string $boundary Boundary to use. If null, will default to $this->_boundary 
  * @return array An array of lines to add to the message
  */
-	protected function _attachFiles() {
+	protected function _attachFiles($boundary = null) {
+		if ($boundary === null) {
+			$boundary = $this->_boundary;
+		}
+
 		$msg = array();
 		foreach ($this->_attachments as $filename => $fileInfo) {
 			if (!empty($fileInfo['contentId'])) {
@@ -1250,7 +1258,7 @@ class CakeEmail {
 			}
 			$data = $this->_readFile($fileInfo['file']);
 
-			$msg[] = '--' . $this->_boundary;
+			$msg[] = '--' . $boundary;
 			$msg[] = 'Content-Type: ' . $fileInfo['mimetype'];
 			$msg[] = 'Content-Transfer-Encoding: base64';
 			$msg[] = 'Content-Disposition: attachment; filename="' . $filename . '"';
@@ -1278,9 +1286,14 @@ class CakeEmail {
 /**
  * Attach inline/embedded files to the message.
  *
+ * @param string $boundary Boundary to use. If null, will default to $this->_boundary 
  * @return array An array of lines to add to the message
  */
-	protected function _attachInlineFiles() {
+	protected function _attachInlineFiles($boundary = null) {
+		if ($boundary === null) {
+			$boundary = $this->_boundary;
+		}
+
 		$msg = array();
 		foreach ($this->_attachments as $filename => $fileInfo) {
 			if (empty($fileInfo['contentId'])) {
@@ -1288,7 +1301,7 @@ class CakeEmail {
 			}
 			$data = $this->_readFile($fileInfo['file']);
 
-			$msg[] = '--rel-' . $this->_boundary;
+			$msg[] = '--' . $boundary;
 			$msg[] = 'Content-Type: ' . $fileInfo['mimetype'];
 			$msg[] = 'Content-Transfer-Encoding: base64';
 			$msg[] = 'Content-ID: <' . $fileInfo['contentId'] . '>';
@@ -1365,7 +1378,7 @@ class CakeEmail {
 		}
 
 		if ($hasInlineAttachments) {
-			$attachments = $this->_attachInlineFiles();
+			$attachments = $this->_attachInlineFiles($relBoundary);
 			$msg = array_merge($msg, $attachments);
 			$msg[] = '';
 			$msg[] = '--' . $relBoundary . '--';
@@ -1373,7 +1386,7 @@ class CakeEmail {
 		}
 
 		if ($hasAttachments) {
-			$attachments = $this->_attachFiles();
+			$attachments = $this->_attachFiles($boundary);
 			$msg = array_merge($msg, $attachments);
 		}
 		if ($hasAttachments || $hasMultipleTypes) {

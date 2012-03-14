@@ -5,12 +5,12 @@
  * PHP 5
  *
  * CakePHP(tm) Tests <http://book.cakephp.org/view/1196/Testing>
- * Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice
  *
- * @copyright     Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://book.cakephp.org/view/1196/Testing CakePHP(tm) Tests
  * @package       Cake.Test.Case.View.Helper
  * @since         CakePHP(tm) v 1.2.0.4206
@@ -136,11 +136,11 @@ class NumberHelperTest extends CakeTestCase {
 		$expected = '1.00 $';
 		$this->assertEquals($expected, $result);
 
-		$result = $this->Number->currency(.2, null, array('wholeSymbol' => ' $', 'wholePosition' => 'after', 'fractionSymbol' => 'cents'));
+		$result = $this->Number->currency(0.2, null, array('wholeSymbol' => ' $', 'wholePosition' => 'after', 'fractionSymbol' => 'cents'));
 		$expected = '20cents';
 		$this->assertEquals($expected, $result);
 
-		$result = $this->Number->currency(.2, null, array('wholeSymbol' => ' $', 'wholePosition' => 'after', 'fractionSymbol' => 'cents', 'fractionPosition' => 'before'));
+		$result = $this->Number->currency(0.2, null, array('wholeSymbol' => ' $', 'wholePosition' => 'after', 'fractionSymbol' => 'cents', 'fractionPosition' => 'before'));
 		$expected = 'cents20';
 		$this->assertEquals($expected, $result);
 
@@ -148,7 +148,7 @@ class NumberHelperTest extends CakeTestCase {
 		$expected = '311.00$';
 		$this->assertEquals($expected, $result);
 
-		$result = $this->Number->currency(.2, 'EUR');
+		$result = $this->Number->currency(0.2, 'EUR');
 		$expected = '&#8364;0,20';
 		$this->assertEquals($expected, $result);
 
@@ -156,11 +156,11 @@ class NumberHelperTest extends CakeTestCase {
 		$expected = '12.00 dollars';
 		$this->assertEquals($expected, $result);
 
-		$result = $this->Number->currency(.12, null, array('wholeSymbol' => ' dollars', 'wholePosition' => 'after', 'fractionSymbol' => ' cents', 'fractionPosition' => 'after'));
+		$result = $this->Number->currency(0.12, null, array('wholeSymbol' => ' dollars', 'wholePosition' => 'after', 'fractionSymbol' => ' cents', 'fractionPosition' => 'after'));
 		$expected = '12 cents';
 		$this->assertEquals($expected, $result);
 
-		$result = $this->Number->currency(.5, null, array('fractionSymbol' => false, 'fractionPosition' => 'before', 'wholeSymbol' => '$'));
+		$result = $this->Number->currency(0.5, null, array('fractionSymbol' => false, 'fractionPosition' => 'before', 'wholeSymbol' => '$'));
 		$expected = '$0.50';
 		$this->assertEquals($expected, $result);
 	}
@@ -184,6 +184,11 @@ class NumberHelperTest extends CakeTestCase {
 		$result = $this->Number->currency(-10, 'Other');
 		$expected = '($$ 10.00)';
 		$this->assertEquals($expected, $result);
+
+		$this->Number->addFormat('Other2', array('before' => '$ ', 'after' => false));
+		$result = $this->Number->currency(0.22, 'Other2');
+		$expected = '$ 0.22';
+		$this->assertEquals($expected,$result);
 	}
 
 /**

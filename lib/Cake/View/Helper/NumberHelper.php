@@ -7,12 +7,12 @@
  * PHP 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       Cake.View.Helper
  * @since         CakePHP(tm) v 0.10.0.1076
@@ -59,7 +59,7 @@ class NumberHelper extends AppHelper {
  */
 	protected $_currencyDefaults = array(
 		'wholeSymbol' => '', 'wholePosition' => 'before', 'fractionSymbol' => '', 'fractionPosition' => 'after',
-		'zero' => '0', 'places' => 2, 'thousands' => ',', 'decimals' => '.','negative' => '()', 'escape' => true
+		'zero' => '0', 'places' => 2, 'thousands' => ',', 'decimals' => '.', 'negative' => '()', 'escape' => true,
 	);
 
 /**
@@ -165,7 +165,11 @@ class NumberHelper extends AppHelper {
  * - `thousands` - Thousands separator ie. ','
  * - `decimals` - Decimal separator symbol ie. '.'
  * - `negative` - Symbol for negative numbers. If equal to '()', the number will be wrapped with ( and )
- * - `escape` - Should the output be htmlentity escaped? Defaults to true
+ * - `escape` - Should the output be htmlentity escaped? Defaults to true.
+ * - `wholeSymbol` String to use for whole numbers ie. ' dollars'.
+ * - `wholePosition` Either 'before' or 'after' to place the whole symbol.
+ * - `fractionSymbol` String to use for fraction numbers ie. ' cents'.
+ * - `fractionPosition` Either 'before' or 'after' to place the fraction symbol.
  *
  * @param float $number
  * @param string $currency Shortcut to default options. Valid values are 'USD', 'EUR', 'GBP', otherwise
@@ -238,8 +242,10 @@ class NumberHelper extends AppHelper {
  *
  * {{{
  *	array(
- *		'before' => '$', 'after' => 'c', 'zero' => 0, 'places' => 2, 'thousands' => ',',
- *		'decimals' => '.', 'negative' => '()', 'escape' => true
+ *		'wholeSymbol' => '', 'wholePosition' => 'before',
+ *		'fractionSymbol' => '', 'fractionPosition' => 'after',
+ *		'zero' => '0', 'places' => 2, 'thousands' => ',',
+ *		'decimals' => '.', 'negative' => '()', 'escape' => true,
  *	)
  * }}}
  *

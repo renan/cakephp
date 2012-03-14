@@ -5,12 +5,12 @@
  * PHP 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       Cake.Network
  * @since         CakePHP(tm) v 2.0
@@ -187,6 +187,8 @@ class CakeResponse {
 		'mp3' => 'audio/mpeg',
 		'mpga' => 'audio/mpeg',
 		'ogg' => 'audio/ogg',
+		'oga' => 'audio/ogg',
+		'spx' => 'audio/ogg',
 		'ra' => 'audio/x-realaudio',
 		'ram' => 'audio/x-pn-realaudio',
 		'rm' => 'audio/x-pn-realaudio',
@@ -194,6 +196,7 @@ class CakeResponse {
 		'snd' => 'audio/basic',
 		'tsi' => 'audio/TSP-audio',
 		'wav' => 'audio/x-wav',
+		'aac' => 'audio/aac',
 		'asc' => 'text/plain',
 		'c' => 'text/plain',
 		'cc' => 'text/plain',
@@ -205,6 +208,7 @@ class CakeResponse {
 		'hh' => 'text/plain',
 		'html' => array('text/html', '*/*'),
 		'htm' => array('text/html', '*/*'),
+		'ics' => 'text/calendar',
 		'm' => 'text/plain',
 		'rtf' => 'text/rtf',
 		'rtx' => 'text/richtext',
@@ -225,6 +229,9 @@ class CakeResponse {
 		'qt' => 'video/quicktime',
 		'viv' => 'video/vnd.vivo',
 		'vivo' => 'video/vnd.vivo',
+		'ogv' => 'video/ogg',
+		'webm' => 'video/webm',
+		'mp4' => 'video/mp4',
 		'gif' => 'image/gif',
 		'ief' => 'image/ief',
 		'jpe' => 'image/jpeg',
