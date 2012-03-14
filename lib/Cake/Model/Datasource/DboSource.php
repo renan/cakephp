@@ -1712,7 +1712,7 @@ class DboSource extends DataSource {
 					));
 				} else {
 					$join = array(
-						'table' => $LinkModel,
+						'table' => $this->fullTableName($LinkModel),
 						'alias' => $association,
 						'type' => isset($assocData['type']) ? $assocData['type'] : 'LEFT',
 						'conditions' => trim($this->conditions($conditions, true, false, $Model))
