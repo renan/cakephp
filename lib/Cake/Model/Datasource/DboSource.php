@@ -1516,7 +1516,7 @@ class DboSource extends DataSource {
 					$query += array('order' => $assocData['order'], 'limit' => $assocData['limit']);
 				} else {
 					$join = array(
-						'table' => $linkModel,
+						'table' => $this->fullTableName($linkModel),
 						'alias' => $association,
 						'type' => isset($assocData['type']) ? $assocData['type'] : 'LEFT',
 						'conditions' => trim($this->conditions($conditions, true, false, $model))
