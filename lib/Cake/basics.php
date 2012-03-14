@@ -239,9 +239,9 @@ if (!function_exists('pr')) {
  */
 	function pr($var) {
 		if (Configure::read('debug') > 0) {
-			echo '<pre>';
+			echo '<xmp>';
 			print_r($var);
-			echo '</pre>';
+			echo '</xmp>';
 		}
 	}
 
