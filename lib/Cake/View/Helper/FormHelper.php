@@ -1153,7 +1153,7 @@ class FormHelper extends AppHelper {
 				'boolean' => 'checkbox', 'timestamp' => 'datetime',
 				'text' => 'textarea', 'time' => 'time',
 				'date' => 'date', 'float' => 'number',
-				'integer' => 'number'
+				'integer' => 'number', 'decimal' => 'number'
 			);
 
 			if (isset($this->map[$type])) {
@@ -1166,7 +1166,7 @@ class FormHelper extends AppHelper {
 			}
 			if (
 				$options['type'] === 'number' &&
-				$type === 'float' &&
+				($type === 'float' || $type === 'decimal') &&
 				!isset($options['step'])
 			) {
 				$options['step'] = 'any';

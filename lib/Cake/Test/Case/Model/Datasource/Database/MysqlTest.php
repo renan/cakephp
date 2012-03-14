@@ -541,7 +541,7 @@ class MysqlTest extends CakeTestCase {
 		$this->assertEquals($expected, $result);
 
 		$result = $this->Dbo->column('decimal(14,7) unsigned');
-		$expected = 'float';
+		$expected = 'decimal';
 		$this->assertEquals($expected, $result);
 	}
 

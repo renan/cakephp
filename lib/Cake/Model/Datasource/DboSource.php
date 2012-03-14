@@ -3098,7 +3098,7 @@ class DboSource extends DataSource {
 			$out .= '(' . $length . ')';
 		}
 
-		if (($column['type'] === 'integer' || $column['type'] === 'float') && isset($column['default']) && $column['default'] === '') {
+		if (($column['type'] === 'integer' || $column['type'] === 'float' || $column['type'] === 'decimal') && isset($column['default']) && $column['default'] === '') {
 			$column['default'] = null;
 		}
 		$out = $this->_buildFieldParameters($out, $column, 'beforeDefault');
