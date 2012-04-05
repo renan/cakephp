@@ -91,10 +91,10 @@ class SessionHelperTest extends CakeTestCase {
  */
 	public function testRead() {
 		$result = $this->Session->read('Deeply.nested.key');
-		$this->assertEquals($result, 'value');
+		$this->assertEquals('value', $result);
 
 		$result = $this->Session->read('test');
-		$this->assertEquals($result, 'info');
+		$this->assertEquals('info', $result);
 	}
 
 /**
@@ -128,7 +128,7 @@ class SessionHelperTest extends CakeTestCase {
 		$this->assertEquals($expected, $result);
 
 		App::build(array(
-			'View' => array(CAKE . 'Test' . DS . 'test_app' . DS . 'View'. DS)
+			'View' => array(CAKE . 'Test' . DS . 'test_app' . DS . 'View' . DS)
 		));
 		$result = $this->Session->flash('notification');
 		$result = str_replace("\r\n", "\n", $result);
@@ -161,7 +161,7 @@ class SessionHelperTest extends CakeTestCase {
  */
 	public function testFlashElementInAttrs() {
 		App::build(array(
-			'View' => array(CAKE . 'Test' . DS . 'test_app' . DS . 'View'. DS)
+			'View' => array(CAKE . 'Test' . DS . 'test_app' . DS . 'View' . DS)
 		));
 		$result = $this->Session->flash('flash', array(
 			'element' => 'session_helper',
@@ -178,7 +178,7 @@ class SessionHelperTest extends CakeTestCase {
  */
 	public function testFlashWithPluginElement() {
 		App::build(array(
-			'Plugin' => array(CAKE . 'Test' . DS . 'test_app' . DS . 'Plugin'. DS)
+			'Plugin' => array(CAKE . 'Test' . DS . 'test_app' . DS . 'Plugin' . DS)
 		));
 		CakePlugin::load('TestPlugin');
 

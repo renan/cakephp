@@ -22,6 +22,7 @@ App::uses('JqueryEngineHelper', 'View/Helper');
 App::uses('View', 'View');
 
 class JqueryEngineHelperTest extends CakeTestCase {
+
 /**
  * setUp
  *
@@ -51,19 +52,19 @@ class JqueryEngineHelperTest extends CakeTestCase {
  */
 	public function testSelector() {
 		$result = $this->Jquery->get('#content');
-		$this->assertEquals($result, $this->Jquery);
+		$this->assertEquals($this->Jquery, $result);
 		$this->assertEquals($this->Jquery->selection, '$("#content")');
 
 		$result = $this->Jquery->get('document');
-		$this->assertEquals($result, $this->Jquery);
+		$this->assertEquals($this->Jquery, $result);
 		$this->assertEquals($this->Jquery->selection, '$(document)');
 
 		$result = $this->Jquery->get('window');
-		$this->assertEquals($result, $this->Jquery);
+		$this->assertEquals($this->Jquery, $result);
 		$this->assertEquals($this->Jquery->selection, '$(window)');
 
 		$result = $this->Jquery->get('ul');
-		$this->assertEquals($result, $this->Jquery);
+		$this->assertEquals($this->Jquery, $result);
 		$this->assertEquals($this->Jquery->selection, '$("ul")');
 	}
 
@@ -83,7 +84,7 @@ class JqueryEngineHelperTest extends CakeTestCase {
 		$this->assertEquals($expected, $result);
 
 		$result = $this->Jquery->event('click', '$(this).hide();');
-		$expected = '$("#myLink").bind("click", function (event) {$(this).hide();'."\n".'return false;});';
+		$expected = '$("#myLink").bind("click", function (event) {$(this).hide();' . "\n" . 'return false;});';
 		$this->assertEquals($expected, $result);
 	}
 
