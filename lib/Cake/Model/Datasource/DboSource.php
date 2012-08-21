@@ -1558,7 +1558,7 @@ class DboSource extends DataSource {
 					$query += array('order' => $assocData['order'], 'limit' => $assocData['limit']);
 				} else {
 					$join = array(
-						'table' => $linkModel,
+						'table' => $this->fullTableName($linkModel),
 						'alias' => $association,
 						'type' => isset($assocData['type']) ? $assocData['type'] : 'LEFT',
 						'conditions' => trim($this->conditions($conditions, true, false, $model))
@@ -3042,13 +3042,17 @@ class DboSource extends DataSource {
 			return null;
 		}
 
-		if (!isset($this->columns[$type])) {
+		if (substr($type, 0, 4) == 'enum') {
+			unset($length, $column['length']);
+			$real = $column;
+			$out = $this->name($name) . ' ' . $type;
+		} elseif (!isset($this->columns[$type])) {
 			trigger_error(__d('cake_dev', 'Column type %s does not exist', $type), E_USER_WARNING);
 			return null;
+		} else {
+			$real = $this->columns[$type];
+			$out = $this->name($name) . ' ' . $real['name'];
 		}
-
-		$real = $this->columns[$type];
-		$out = $this->name($name) . ' ' . $real['name'];
 
 		if (isset($column['length'])) {
 			$length = $column['length'];
@@ -3063,7 +3067,7 @@ class DboSource extends DataSource {
 			$out .= '(' . $length . ')';
 		}
 
-		if (($column['type'] === 'integer' || $column['type'] === 'float') && isset($column['default']) && $column['default'] === '') {
+		if (($column['type'] === 'integer' || $column['type'] === 'float' || $column['type'] === 'decimal') && isset($column['default']) && $column['default'] === '') {
 			$column['default'] = null;
 		}
 		$out = $this->_buildFieldParameters($out, $column, 'beforeDefault');

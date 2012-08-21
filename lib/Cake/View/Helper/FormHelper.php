@@ -957,7 +957,7 @@ class FormHelper extends AppHelper {
 					'boolean' => 'checkbox', 'timestamp' => 'datetime',
 					'text' => 'textarea', 'time' => 'time',
 					'date' => 'date', 'float' => 'number',
-					'integer' => 'number'
+					'integer' => 'number', 'decimal' => 'number'
 				);
 
 				if (isset($this->map[$type])) {
@@ -970,7 +970,7 @@ class FormHelper extends AppHelper {
 				}
 				if (
 					$options['type'] === 'number' &&
-					$type === 'float' &&
+					($type === 'float' || $type === 'decimal') &&
 					!isset($options['step'])
 				) {
 					$options['step'] = 'any';
@@ -1009,7 +1009,7 @@ class FormHelper extends AppHelper {
 		if ($autoLength && $options['type'] == 'text') {
 			$options['maxlength'] = $fieldDef['length'];
 		}
-		if ($autoLength && $fieldDef['type'] == 'float') {
+		if ($autoLength && ($fieldDef['type'] == 'float' || $fieldDef['type'] == 'decimal')) {
 			$options['maxlength'] = array_sum(explode(',', $fieldDef['length'])) + 1;
 		}
 
