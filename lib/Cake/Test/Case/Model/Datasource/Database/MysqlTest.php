@@ -2020,6 +2020,25 @@ class MysqlTest extends CakeTestCase {
 	}
 
 /**
+ * test that - in conditions and field names works
+ *
+ * @return void
+ */
+	public function testHypenInStringConditionsAndFieldNames() {
+		$result = $this->Dbo->conditions('I18n__title_pt-br.content = "test"');
+		$this->assertEquals(' WHERE `I18n__title_pt-br`.`content` = "test"', $result);
+
+		$result = $this->Dbo->conditions('Model.field=NOW()-3600');
+		$this->assertEquals(' WHERE `Model`.`field`=NOW()-3600', $result);
+
+		$result = $this->Dbo->conditions('NOW() - Model.created < 7200');
+		$this->assertEquals(' WHERE NOW() - `Model`.`created` < 7200', $result);
+
+		$result = $this->Dbo->conditions('NOW()-Model.created < 7200');
+		$this->assertEquals(' WHERE NOW()-`Model`.`created` < 7200', $result);
+	}
+
+/**
  * testParenthesisInStringConditions method
  *
  * @return void

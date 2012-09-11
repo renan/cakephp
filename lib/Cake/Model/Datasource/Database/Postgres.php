@@ -438,7 +438,7 @@ class Postgres extends DboSource {
 			)
 			AND c.oid = i.indrelid AND i.indexrelid = c2.oid
 			ORDER BY i.indisprimary DESC, i.indisunique DESC, c2.relname", false);
-			foreach ($indexes as $i => $info) {
+			foreach ($indexes as $info) {
 				$key = array_pop($info);
 				if ($key['indisprimary']) {
 					$key['relname'] = 'PRIMARY';
@@ -649,7 +649,6 @@ class Postgres extends DboSource {
 				return 'float';
 			default:
 				return 'text';
-			break;
 		}
 	}
 
@@ -879,10 +878,8 @@ class Postgres extends DboSource {
 					}
 				}
 				return "CREATE TABLE {$table} (\n\t{$columns}\n);\n{$indexes}";
-			break;
 			default:
 				return parent::renderStatement($type, $data);
-			break;
 		}
 	}
 

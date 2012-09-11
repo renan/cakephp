@@ -1745,7 +1745,6 @@ class Model extends Object implements CakeEventListener {
 
 		if ($success && $count > 0) {
 			if (!empty($this->data)) {
-				$success = $this->data;
 				if ($created) {
 					$this->data[$this->alias][$this->primaryKey] = $this->id;
 				}
@@ -1755,7 +1754,7 @@ class Model extends Object implements CakeEventListener {
 				$this->getEventManager()->dispatch($event);
 			}
 			if (!empty($this->data)) {
-				$success = Hash::merge($success, $this->data);
+				$success = $this->data;
 			}
 			$this->data = false;
 			$this->_clearCache();
@@ -2364,7 +2363,7 @@ class Model extends Object implements CakeEventListener {
 
 			$updateCounterCache = false;
 			if (!empty($this->belongsTo)) {
-				foreach ($this->belongsTo as $parent => $assoc) {
+				foreach ($this->belongsTo as $assoc) {
 					if (!empty($assoc['counterCache'])) {
 						$updateCounterCache = true;
 						break;
@@ -2450,7 +2449,7 @@ class Model extends Object implements CakeEventListener {
  * @return void
  */
 	protected function _deleteLinks($id) {
-		foreach ($this->hasAndBelongsToMany as $assoc => $data) {
+		foreach ($this->hasAndBelongsToMany as $data) {
 			list($plugin, $joinModel) = pluginSplit($data['with']);
 			$records = $this->{$joinModel}->find('all', array(
 				'conditions' => array($this->{$joinModel}->escapeField($data['foreignKey']) => $id),
@@ -3043,7 +3042,7 @@ class Model extends Object implements CakeEventListener {
 	public function isForeignKey($field) {
 		$foreignKeys = array();
 		if (!empty($this->belongsTo)) {
-			foreach ($this->belongsTo as $assoc => $data) {
+			foreach ($this->belongsTo as $data) {
 				$foreignKeys[] = $data['foreignKey'];
 			}
 		}
