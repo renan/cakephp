@@ -338,6 +338,10 @@ class DboSource extends DataSource {
 
 		if (empty($column)) {
 			$column = $this->introspectType($data);
+		} elseif (substr($column, 0, 4) === 'enum') {
+			// Always need to be string, even when $data is a integer
+			// If a integer is passed it will relate to the index on the ENUM list, not the value itself
+			$column = 'string';
 		}
 
 		switch ($column) {
