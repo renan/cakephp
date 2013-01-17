@@ -843,13 +843,13 @@ EXPECTED;
 		ob_start();
 		pr('this is a test');
 		$result = ob_get_clean();
-		$expected = "<pre>this is a test</pre>";
+		$expected = "<xmp>this is a test</xmp>";
 		$this->assertEquals($expected, $result);
 
 		ob_start();
 		pr(array('this' => 'is', 'a' => 'test'));
 		$result = ob_get_clean();
-		$expected = "<pre>Array\n(\n    [this] => is\n    [a] => test\n)\n</pre>";
+		$expected = "<xmp>Array\n(\n    [this] => is\n    [a] => test\n)\n</xmp>";
 		$this->assertEquals($expected, $result);
 	}
 
