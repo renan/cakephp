@@ -147,11 +147,14 @@ class TranslateBehavior extends ModelBehavior {
 		if (empty($query['fields'])) {
 			$addFields = $fields;
 		} elseif (is_array($query['fields'])) {
+			$isAllFields = (
+				in_array($Model->alias . '.' . '*', $query['fields']) ||
+				in_array($Model->escapeField('*'), $query['fields'])
+			);
 			foreach ($fields as $key => $value) {
 				$field = (is_numeric($key)) ? $value : $key;
-
 				if (
-					in_array($Model->escapeField('*'), $query['fields']) ||
+					$isAllFields ||
 					in_array($Model->alias . '.' . $field, $query['fields']) ||
 					in_array($field, $query['fields'])
 				) {
@@ -378,6 +381,21 @@ class TranslateBehavior extends ModelBehavior {
 			}
 		}
 		$this->runtime[$Model->alias]['beforeSave'] = $tempData;
+	}
+
+/**
+ * Restores model data to the original data.
+ * This solves issues with saveAssociated and validate = first.
+ *
+ * @param Model $model
+ * @return void
+ */
+	public function afterValidate(Model $Model) {
+		$Model->data[$Model->alias] = array_merge(
+			$Model->data[$Model->alias],
+			$this->runtime[$Model->alias]['beforeSave']
+		);
+		return true;
 	}
 
 /**
