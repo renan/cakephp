@@ -484,7 +484,7 @@ TEXT;
 		Debugger::dump($var);
 		$result = ob_get_clean();
 		$expected = <<<TEXT
-<pre>array(
+<xmp>array(
 	'People' => array(
 		(int) 0 => array(
 			'name' => 'joeseph',
@@ -497,7 +497,7 @@ TEXT;
 			'hair' => 'black'
 		)
 	)
-)</pre>
+)</xmp>
 TEXT;
 		$this->assertTextEquals($expected, $result);
 	}
