@@ -534,7 +534,6 @@ class CakeSchemaTest extends CakeTestCase {
 /**
  * testSchemaReadWithAppModel method
  *
- * @access public
  * @return void
  */
 	public function testSchemaReadWithAppModel() {
