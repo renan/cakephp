@@ -18,7 +18,7 @@ use Cake\I18n\I18n;
 use Cake\Log\Log;
 
 define('DS', DIRECTORY_SEPARATOR);
-define('ROOT', dirname(dirname(__DIR__)));
+define('ROOT', dirname(__DIR__));
 define('APP_DIR', 'App');
 define('WEBROOT_DIR', 'webroot');
 
@@ -30,15 +30,15 @@ define('SESSIONS', TMP . 'sessions' . DS);
 define('CAKE_CORE_INCLUDE_PATH', ROOT);
 define('CORE_PATH', CAKE_CORE_INCLUDE_PATH . DS);
 define('CAKE', CORE_PATH . 'Cake' . DS);
-define('CORE_TEST_CASES', CAKE . 'Test' . DS . 'TestCase');
+define('CORE_TEST_CASES', ROOT . 'Test' . DS . 'TestCase');
 define('LOG_ERROR', LOG_ERR);
 
 // Point app constants to the test app.
-define('APP', ROOT . '/Cake/Test/TestApp/');
+define('APP', ROOT . '/Test/TestApp/');
 define('WWW_ROOT', APP . WEBROOT_DIR . DS);
 define('TESTS', APP . 'Test' . DS);
 
-define('TEST_APP', ROOT . '/Cake/Test/TestApp/');
+define('TEST_APP', APP);
 
 //@codingStandardsIgnoreStart
 @mkdir(LOGS);
@@ -50,11 +50,12 @@ define('TEST_APP', ROOT . '/Cake/Test/TestApp/');
 
 require CORE_PATH . 'Cake/Core/ClassLoader.php';
 
-(new Cake\Core\ClassLoader('Cake', dirname(dirname(__DIR__)) ))->register();
+(new Cake\Core\ClassLoader('Cake', dirname(__DIR__)))->register();
+(new Cake\Core\ClassLoader('Cake\\Test', __DIR__))->register();
 (new Cake\Core\ClassLoader('TestApp', dirname(__DIR__) . '/Test'))->register();
-(new Cake\Core\ClassLoader('TestPlugin', CAKE . '/Test/TestApp/Plugin/'))->register();
-(new Cake\Core\ClassLoader('TestPluginTwo', CAKE . '/Test/TestApp/Plugin/'))->register();
-(new Cake\Core\ClassLoader('PluginJs', CAKE . '/Test/TestApp/Plugin/'))->register();
+(new Cake\Core\ClassLoader('TestPlugin', TEST_APP . 'Plugin/'))->register();
+(new Cake\Core\ClassLoader('TestPluginTwo', TEST_APP . 'Plugin/'))->register();
+(new Cake\Core\ClassLoader('PluginJs', TEST_APP . 'Plugin/'))->register();
 
 require CORE_PATH . 'Cake/bootstrap.php';
 

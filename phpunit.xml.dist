@@ -5,7 +5,7 @@
 	processIsolation="false"
 	stopOnFailure="false"
 	syntaxCheck="false"
-	bootstrap="./Cake/Test/init.php"
+	bootstrap="./Test/init.php"
 	>
 	<php>
 		<ini name="memory_limit" value="-1"/>
@@ -14,13 +14,13 @@
 
 	<testsuites>
 		<testsuite name="CakePHP Test Suite">
-			<directory>./Cake/Test/TestCase/</directory>
-			<exclude>./Cake/Test/TestCase/Model/</exclude>
-			<exclude>./Cake/Test/TestCase/Database/</exclude>
-			<exclude>./Cake/Test/TestCase/ORM/</exclude>
+			<directory>./Test/TestCase/</directory>
+			<exclude>./Test/TestCase/Model/</exclude>
+			<exclude>./Test/TestCase/Database/</exclude>
+			<exclude>./Test/TestCase/ORM/</exclude>
 		</testsuite>
 		<testsuite name="Database Test Suite">
-			<file>./Cake/Test/TestCase/DatabaseSuite.php</file>
+			<file>./Test/TestCase/DatabaseSuite.php</file>
 		</testsuite>
 	</testsuites>
 	<listeners>
