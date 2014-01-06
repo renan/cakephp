@@ -107,11 +107,16 @@ class ClassLoader {
 		if (substr($className, 0, $this->_namespaceLength) !== $this->_namespace) {
 			return false;
 		}
-		$path = $this->_path . DS . str_replace('\\', DS, $className) . $this->_fileExtension;
-		if (!file_exists($path)) {
-			return false;
+		$lookups = [
+			'psr-4' => $this->_path . DS . str_replace('\\', DS, substr($className, $this->_namespaceLength)) . $this->_fileExtension,
+			'psr-0' => $this->_path . DS . str_replace('\\', DS, $className) . $this->_fileExtension,
+		];
+		foreach ($lookups as $path) {
+			if (file_exists($path)) {
+				return require $path;
+			}
 		}
-		return require $path;
+		return false;
 	}
 
 }
