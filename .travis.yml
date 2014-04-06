@@ -40,7 +40,11 @@ before_script:
   - set +H
 
 script:
-  - sh -c "if [ '$PHPCS' != '1' ]; then phpunit --stderr; else phpcs -p --extensions=php --standard=CakePHP ./src ./tests; fi"
+  - sh -c "if [ '$PHPCS' != '1' ]; then phpunit --stderr --coverage-clover=coverage-clover.xml; else phpcs -p --extensions=php --standard=CakePHP ./src ./tests; fi"
+
+after_script:
+  - wget https://scrutinizer-ci.com/ocular.phar
+  - php ocular.phar code-coverage:upload --format=php-clover coverage-clover.xml
 
 notifications:
   email: false
