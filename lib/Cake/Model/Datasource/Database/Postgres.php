@@ -110,11 +110,13 @@ class Postgres extends DboSource {
 	public function connect() {
 		$config = $this->config;
 		$this->connected = false;
+
+		$flags = array(
+			PDO::ATTR_PERSISTENT => $config['persistent'],
+			PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+		);
+
 		try {
-			$flags = array(
-				PDO::ATTR_PERSISTENT => $config['persistent'],
-				PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-			);
 			$this->_connection = new PDO(
 				"pgsql:host={$config['host']};port={$config['port']};dbname={$config['database']}",
 				$config['login'],
@@ -746,11 +748,11 @@ class Postgres extends DboSource {
 
 				switch ($type) {
 					case 'bool':
-						$resultRow[$table][$column] = is_null($row[$index]) ? null : $this->boolean($row[$index]);
+						$resultRow[$table][$column] = $row[$index] === null ? null : $this->boolean($row[$index]);
 						break;
 					case 'binary':
 					case 'bytea':
-						$resultRow[$table][$column] = is_null($row[$index]) ? null : stream_get_contents($row[$index]);
+						$resultRow[$table][$column] = $row[$index] === null ? null : stream_get_contents($row[$index]);
 						break;
 					default:
 						$resultRow[$table][$column] = $row[$index];
