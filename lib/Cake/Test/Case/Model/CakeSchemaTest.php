@@ -173,6 +173,7 @@ class TestAppSchema extends CakeSchema {
 		'float_field' => array('type' => 'float', 'null' => false, 'length' => '5,2', 'default' => ''),
 		'decimal_field' => array('type' => 'decimal', 'length' => '6,3', 'default' => '0.000'),
 		'huge_int' => array('type' => 'biginteger'),
+		'enum_field' => array('type' => 'enum(\'one\',\'two\',\'three\')', 'length' => 5, 'default' => 'one'),
 		'bool' => array('type' => 'boolean', 'null' => false, 'default' => false),
 		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => true)),
 		'tableParameters' => array()
