@@ -109,6 +109,7 @@ class Mysql extends DboSource {
 		'text' => array('name' => 'text'),
 		'biginteger' => array('name' => 'bigint', 'limit' => '20'),
 		'integer' => array('name' => 'int', 'limit' => '11', 'formatter' => 'intval'),
+		'decimal' => array('name' => 'decimal', 'formatter' => 'floatval'),
 		'float' => array('name' => 'float', 'formatter' => 'floatval'),
 		'datetime' => array('name' => 'datetime', 'format' => 'Y-m-d H:i:s', 'formatter' => 'date'),
 		'timestamp' => array('name' => 'timestamp', 'format' => 'Y-m-d H:i:s', 'formatter' => 'date'),
@@ -761,7 +762,10 @@ class Mysql extends DboSource {
 		if (strpos($col, 'blob') !== false || $col === 'binary') {
 			return 'binary';
 		}
-		if (strpos($col, 'float') !== false || strpos($col, 'double') !== false || strpos($col, 'decimal') !== false) {
+		if (strpos($col, 'decimal') !== false) {
+			return 'decimal';
+		}
+		if (strpos($col, 'float') !== false || strpos($col, 'double') !== false) {
 			return 'float';
 		}
 		if (strpos($col, 'enum') !== false) {
