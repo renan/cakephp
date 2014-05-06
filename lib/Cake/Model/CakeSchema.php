@@ -414,6 +414,8 @@ class CakeSchema extends Object {
 					if (is_string($value)) {
 						$type = $value;
 						$value = array('type' => $type);
+					} elseif (substr($value['type'], 0, 4) == 'enum') {
+						$value['type'] = addslashes($value['type']);
 					}
 					$col = "\t\t'{$field}' => array('type' => '" . $value['type'] . "', ";
 					unset($value['type']);
@@ -611,7 +613,9 @@ class CakeSchema extends Object {
 			if ($Obj->primaryKey === $name) {
 				$value['key'] = 'primary';
 			}
-			if (!isset($db->columns[$value['type']])) {
+			if (substr($value['type'], 0, 4) == 'enum') {
+				// just don't throw the error, ignore it
+			} elseif (!isset($db->columns[$value['type']])) {
 				trigger_error(__d('cake_dev', 'Schema generation error: invalid column type %s for %s.%s does not exist in DBO', $value['type'], $Obj->name, $name), E_USER_NOTICE);
 				continue;
 			} else {
