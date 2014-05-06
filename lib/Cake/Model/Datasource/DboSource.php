@@ -336,6 +336,10 @@ class DboSource extends DataSource {
 
 		if (empty($column)) {
 			$column = $this->introspectType($data);
+		} elseif (substr($column, 0, 4) === 'enum') {
+			// Always need to be string, even when $data is a integer
+			// If a integer is passed it will relate to the index on the ENUM list, not the value itself
+			$column = 'string';
 		}
 
 		switch ($column) {
@@ -3305,13 +3309,17 @@ class DboSource extends DataSource {
 			return null;
 		}
 
-		if (!isset($this->columns[$type])) {
+		if (substr($type, 0, 4) == 'enum') {
+			unset($length, $column['length']);
+			$real = $column;
+			$out = $this->name($name) . ' ' . $type;
+		} elseif (!isset($this->columns[$type])) {
 			trigger_error(__d('cake_dev', 'Column type %s does not exist', $type), E_USER_WARNING);
 			return null;
+		} else {
+			$real = $this->columns[$type];
+			$out = $this->name($name) . ' ' . $real['name'];
 		}
-
-		$real = $this->columns[$type];
-		$out = $this->name($name) . ' ' . $real['name'];
 
 		if (isset($column['length'])) {
 			$length = $column['length'];
