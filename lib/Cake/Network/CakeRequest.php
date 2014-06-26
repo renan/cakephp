@@ -602,7 +602,7 @@ class CakeRequest implements ArrayAccess {
  * This modifies the parameters available through `$request->params`.
  *
  * @param array $params Array of parameters to merge in
- * @return The current object, you can chain this method.
+ * @return $this
  */
 	public function addParams($params) {
 		$this->params = array_merge($this->params, (array)$params);
@@ -614,7 +614,7 @@ class CakeRequest implements ArrayAccess {
  * Provides an easy way to modify, here, webroot and base.
  *
  * @param array $paths Array of paths to merge in
- * @return CakeRequest the current object, you can chain this method.
+ * @return $this
  */
 	public function addPaths($paths) {
 		foreach (array('webroot', 'here', 'base') as $element) {
@@ -793,7 +793,7 @@ class CakeRequest implements ArrayAccess {
  * Only qualifiers will be extracted, any other accept extensions will be
  * discarded as they are not frequently used.
  *
- * @param string $header
+ * @param string $header Header to parse.
  * @return array
  */
 	protected static function _parseAcceptWithQualifier($header) {
@@ -854,8 +854,8 @@ class CakeRequest implements ArrayAccess {
  * You can write to any value, even paths/keys that do not exist, and the arrays
  * will be created for you.
  *
- * @param string $name,... Dot separated name of the value to read/write
- * @return mixed Either the value being read, or this so you can chain consecutive writes.
+ * @param string $name Dot separated name of the value to read/write, one or more args.
+ * @return mixed|$this Either the value being read, or $this so you can chain consecutive writes.
  */
 	public function data($name) {
 		$args = func_get_args();
@@ -945,11 +945,11 @@ class CakeRequest implements ArrayAccess {
 /**
  * Alias of CakeRequest::allowMethod() for backwards compatibility.
  *
- * @see CakeRequest::allowMethod()
- * @deprecated 2.5 Use CakeRequest::allowMethod() instead.
  * @param string|array $methods Allowed HTTP request methods.
  * @return boolean true
  * @throws MethodNotAllowedException
+ * @see CakeRequest::allowMethod()
+ * @deprecated 2.5 Use CakeRequest::allowMethod() instead.
  */
 	public function onlyAllow($methods) {
 		if (!is_array($methods)) {

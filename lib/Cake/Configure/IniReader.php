@@ -17,6 +17,7 @@
  */
 
 App::uses('Hash', 'Utility');
+App::uses('CakePlugin', 'Core');
 
 /**
  * Ini file configuration engine.
@@ -181,7 +182,7 @@ class IniReader implements ConfigReaderInterface {
 /**
  * Converts a value into the ini equivalent
  *
- * @param mixed $value to export.
+ * @param mixed $val Value to export.
  * @return string String value for ini file.
  */
 	protected function _value($val) {
@@ -218,7 +219,7 @@ class IniReader implements ConfigReaderInterface {
 		}
 
 		if ($plugin) {
-			$file = App::pluginPath($plugin) . 'Config' . DS . $key;
+			$file = CakePlugin::path($plugin) . 'Config' . DS . $key;
 		} else {
 			$file = $this->_path . $key;
 		}
