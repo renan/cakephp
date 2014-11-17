@@ -161,8 +161,8 @@ class ModelTask extends BakeTask {
  *
  * @param array $options Array of options to use for the selections. indexes must start at 0
  * @param string $prompt Prompt to use for options list.
- * @param integer $default The default option for the given prompt.
- * @return integer Result of user choice.
+ * @param int $default The default option for the given prompt.
+ * @return int Result of user choice.
  */
 	public function inOptions($options, $prompt = null, $default = null) {
 		$valid = false;
@@ -176,7 +176,7 @@ class ModelTask extends BakeTask {
 				$prompt = __d('cake_console', 'Make a selection from the choices above');
 			}
 			$choice = $this->in($prompt, null, $default);
-			if (intval($choice) > 0 && intval($choice) <= $max) {
+			if ((int)$choice > 0 && (int)$choice <= $max) {
 				$valid = true;
 			}
 		}
@@ -186,7 +186,7 @@ class ModelTask extends BakeTask {
 /**
  * Handles interactive baking
  *
- * @return boolean
+ * @return bool
  */
 	protected function _interactive() {
 		$this->hr();
@@ -342,7 +342,7 @@ class ModelTask extends BakeTask {
  * Handles Generation and user interaction for creating validation.
  *
  * @param Model $model Model to have validations generated for.
- * @return array $validate Array of user selected validations.
+ * @return array validate Array of user selected validations.
  */
 	public function doValidation($model) {
 		if (!$model instanceof Model) {
@@ -728,7 +728,7 @@ class ModelTask extends BakeTask {
 		while (strtolower($wannaDoMoreAssoc) === 'y') {
 			$assocs = array('belongsTo', 'hasOne', 'hasMany', 'hasAndBelongsToMany');
 			$this->out(__d('cake_console', 'What is the association type?'));
-			$assocType = intval($this->inOptions($assocs, __d('cake_console', 'Enter a number')));
+			$assocType = (int)$this->inOptions($assocs, __d('cake_console', 'Enter a number'));
 
 			$this->out(__d('cake_console', "For the following options be very careful to match your setup exactly.\n" .
 				"Any spelling mistakes will cause errors."));
@@ -765,7 +765,7 @@ class ModelTask extends BakeTask {
 			if (!empty($showKeys)) {
 				$this->out(__d('cake_console', 'A helpful List of possible keys'));
 				$foreignKey = $this->inOptions($showKeys, __d('cake_console', 'What is the foreignKey?'));
-				$foreignKey = $showKeys[intval($foreignKey)];
+				$foreignKey = $showKeys[(int)$foreignKey];
 			}
 			if (!isset($foreignKey)) {
 				$foreignKey = $this->in(__d('cake_console', 'What is the foreignKey? Specify your own.'), null, $suggestedForeignKey);
@@ -812,7 +812,7 @@ class ModelTask extends BakeTask {
  * Assembles and writes a Model file.
  *
  * @param string|object $name Model name or object
- * @param array|boolean $data if array and $name is not an object assume bake data, otherwise boolean.
+ * @param array|bool $data if array and $name is not an object assume bake data, otherwise boolean.
  * @return string
  */
 	public function bake($name, $data = array()) {
@@ -985,14 +985,14 @@ class ModelTask extends BakeTask {
 				return $this->_stop();
 			}
 
-			if (!$enteredModel || intval($enteredModel) > count($this->_modelNames)) {
+			if (!$enteredModel || (int)$enteredModel > count($this->_modelNames)) {
 				$this->err(__d('cake_console', "The model name you supplied was empty,\n" .
 					"or the number you selected was not an option. Please try again."));
 				$enteredModel = '';
 			}
 		}
-		if (intval($enteredModel) > 0 && intval($enteredModel) <= count($this->_modelNames)) {
-			return $this->_modelNames[intval($enteredModel) - 1];
+		if ((int)$enteredModel > 0 && (int)$enteredModel <= count($this->_modelNames)) {
+			return $this->_modelNames[(int)$enteredModel - 1];
 		}
 
 		return $enteredModel;

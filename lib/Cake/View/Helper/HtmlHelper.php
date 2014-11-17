@@ -198,7 +198,7 @@ class HtmlHelper extends AppHelper {
  *  - xhtml11: XHTML1.1.
  *
  * @param string $type Doctype to use.
- * @return string Doctype string
+ * @return string|null Doctype string
  * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/html.html#HtmlHelper::docType
  */
 	public function docType($type = 'html5') {
@@ -481,7 +481,6 @@ class HtmlHelper extends AppHelper {
  * If the filename is prefixed with "/", the path will be relative to the base path of your
  * application. Otherwise, the path will be relative to your JavaScript path, usually webroot/js.
  *
- *
  * ### Usage
  *
  * Include one script file:
@@ -498,7 +497,7 @@ class HtmlHelper extends AppHelper {
  *
  * Add the script file to a custom block:
  *
- * `$this->Html->script('styles.js', null, array('block' => 'bodyScript'));`
+ * `$this->Html->script('styles.js', array('block' => 'bodyScript'));`
  *
  * ### Options
  *
@@ -512,7 +511,7 @@ class HtmlHelper extends AppHelper {
  * - `fullBase` If true the url will get a full address for the script file.
  *
  * @param string|array $url String or array of javascript files to include
- * @param array|boolean $options Array of options, and html attributes see above. If boolean sets $options['inline'] = value
+ * @param array|bool $options Array of options, and html attributes see above. If boolean sets $options['inline'] = value
  * @return mixed String of `<script />` tags or null if $inline is false or if $once is true and the file has been
  *   included before.
  * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/html.html#HtmlHelper::script
@@ -614,7 +613,6 @@ class HtmlHelper extends AppHelper {
 		$options += array('safe' => true, 'inline' => true);
 		$this->_scriptBlockOptions = $options;
 		ob_start();
-		return null;
 	}
 
 /**
@@ -645,7 +643,7 @@ class HtmlHelper extends AppHelper {
  * }}}
  *
  * @param array $data Style data array, keys will be used as property names, values as property values.
- * @param boolean $oneline Whether or not the style block should be displayed on one line.
+ * @param bool $oneline Whether or not the style block should be displayed on one line.
  * @return string CSS styling data
  * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/html.html#HtmlHelper::style
  */
@@ -674,9 +672,9 @@ class HtmlHelper extends AppHelper {
  * All other keys will be passed to HtmlHelper::link() as the `$options` parameter.
  *
  * @param string $separator Text to separate crumbs.
- * @param string|array|boolean $startText This will be the first crumb, if false it defaults to first crumb in array. Can
+ * @param string|array|bool $startText This will be the first crumb, if false it defaults to first crumb in array. Can
  *   also be an array, see above for details.
- * @return string Composed bread crumbs
+ * @return string|null Composed bread crumbs
  * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/html.html#creating-breadcrumb-trails-with-htmlhelper
  */
 	public function getCrumbs($separator = '&raquo;', $startText = false) {
@@ -708,9 +706,9 @@ class HtmlHelper extends AppHelper {
  * - `lastClass` Class for wrapper tag on current active page, defaults to 'last'
  *
  * @param array $options Array of html attributes to apply to the generated list elements.
- * @param string|array|boolean $startText This will be the first crumb, if false it defaults to first crumb in array. Can
+ * @param string|array|bool $startText This will be the first crumb, if false it defaults to first crumb in array. Can
  *   also be an array, see `HtmlHelper::getCrumbs` for details.
- * @return string breadcrumbs html list
+ * @return string|null breadcrumbs html list
  * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/html.html#creating-breadcrumb-trails-with-htmlhelper
  */
 	public function getCrumbList($options = array(), $startText = false) {
@@ -754,7 +752,7 @@ class HtmlHelper extends AppHelper {
  * Prepends startText to crumbs array if set
  *
  * @param string $startText Text to prepend
- * @param boolean $escape If the output should be escaped or not
+ * @param bool $escape If the output should be escaped or not
  * @return array Crumb list including startText (if provided)
  */
 	protected function _prepareCrumbs($startText, $escape = true) {
@@ -851,8 +849,8 @@ class HtmlHelper extends AppHelper {
  * @param array $data Array of table data
  * @param array $oddTrOptions HTML options for odd TR elements if true useCount is used
  * @param array $evenTrOptions HTML options for even TR elements
- * @param boolean $useCount adds class "column-$i"
- * @param boolean $continueOddEven If false, will use a non-static $count variable,
+ * @param bool $useCount adds class "column-$i"
+ * @param bool $continueOddEven If false, will use a non-static $count variable,
  *    so that the odd/even count is reset to zero just for that call.
  * @return string Formatted HTML
  * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/html.html#HtmlHelper::tableCells

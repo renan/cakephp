@@ -159,7 +159,7 @@ class Hash {
  *
  * @param string $key The key in the array being searched.
  * @param string $token The token being matched.
- * @return boolean
+ * @return bool
  */
 	protected static function _matchToken($key, $token) {
 		if ($token === '{n}') {
@@ -179,7 +179,7 @@ class Hash {
  *
  * @param array $data Array of data to match.
  * @param string $selector The patterns to match.
- * @return boolean Fitness of expression.
+ * @return bool Fitness of expression.
  */
 	protected static function _matches(array $data, $selector) {
 		preg_match_all(
@@ -282,7 +282,7 @@ class Hash {
  * @param array $data The data to operate on.
  * @param array $path The path to work on.
  * @param mixed $values The values to insert when doing inserts.
- * @return array $data.
+ * @return array data.
  */
 	protected static function _simpleOp($op, $data, $path, $values = null) {
 		$_list =& $data;
@@ -290,8 +290,8 @@ class Hash {
 		$count = count($path);
 		$last = $count - 1;
 		foreach ($path as $i => $key) {
-			if (is_numeric($key) && intval($key) > 0 || $key === '0') {
-				$key = intval($key);
+			if ((is_numeric($key) && intval($key) > 0 || $key === '0') && strpos($key, '0') !== 0) {
+				$key = (int)$key;
 			}
 			if ($op === 'insert') {
 				if ($i === $last) {
@@ -355,7 +355,7 @@ class Hash {
 				if (empty($data[$k])) {
 					unset($data[$k]);
 				}
-			} elseif ($match) {
+			} elseif ($match && empty($nextPath)) {
 				unset($data[$k]);
 			}
 		}
@@ -484,7 +484,7 @@ class Hash {
  *
  * @param array $data The data to search through.
  * @param array $needle The values to file in $data
- * @return boolean true if $data contains $needle, false otherwise
+ * @return bool true if $data contains $needle, false otherwise
  * @link http://book.cakephp.org/2.0/en/core-utility-libraries/hash.html#Hash::contains
  */
 	public static function contains(array $data, array $needle) {
@@ -525,7 +525,7 @@ class Hash {
  *
  * @param array $data The data to check.
  * @param string $path The path to check for.
- * @return boolean Existence of path.
+ * @return bool Existence of path.
  * @see Hash::extract()
  * @link http://book.cakephp.org/2.0/en/core-utility-libraries/hash.html#Hash::check
  */
@@ -559,7 +559,7 @@ class Hash {
  * Callback function for filtering.
  *
  * @param array $var Array to filter.
- * @return boolean
+ * @return bool
  */
 	protected static function _filter($var) {
 		if ($var === 0 || $var === '0' || !empty($var)) {
@@ -622,6 +622,9 @@ class Hash {
  */
 	public static function expand($data, $separator = '.') {
 		$result = array();
+
+		$stack = array();
+
 		foreach ($data as $flat => $value) {
 			$keys = explode($separator, $flat);
 			$keys = array_reverse($keys);
@@ -634,7 +637,24 @@ class Hash {
 					$k => $child
 				);
 			}
-			$result = self::merge($result, $child);
+
+			$stack[] = array($child, &$result);
+
+			while (!empty($stack)) {
+				foreach ($stack as $curKey => &$curMerge) {
+					foreach ($curMerge[0] as $key => &$val) {
+						if (!empty($curMerge[1][$key]) && (array)$curMerge[1][$key] === $curMerge[1][$key] && (array)$val === $val) {
+							$stack[] = array(&$val, &$curMerge[1][$key]);
+						} elseif ((int)$key === $key && isset($curMerge[1][$key])) {
+							$curMerge[1][] = $val;
+						} else {
+							$curMerge[1][$key] = $val;
+						}
+					}
+					unset($stack[$curKey]);
+				}
+				unset($curMerge);
+			}
 		}
 		return $result;
 	}
@@ -654,19 +674,28 @@ class Hash {
  * @link http://book.cakephp.org/2.0/en/core-utility-libraries/hash.html#Hash::merge
  */
 	public static function merge(array $data, $merge) {
-		$args = func_get_args();
-		$return = current($args);
+		$args = array_slice(func_get_args(), 1);
+		$return = $data;
 
-		while (($arg = next($args)) !== false) {
-			foreach ((array)$arg as $key => $val) {
-				if (!empty($return[$key]) && is_array($return[$key]) && is_array($val)) {
-					$return[$key] = self::merge($return[$key], $val);
-				} elseif (is_int($key) && isset($return[$key])) {
-					$return[] = $val;
-				} else {
-					$return[$key] = $val;
+		foreach ($args as &$curArg) {
+			$stack[] = array((array)$curArg, &$return);
+		}
+		unset($curArg);
+
+		while (!empty($stack)) {
+			foreach ($stack as $curKey => &$curMerge) {
+				foreach ($curMerge[0] as $key => &$val) {
+					if (!empty($curMerge[1][$key]) && (array)$curMerge[1][$key] === $curMerge[1][$key] && (array)$val === $val) {
+						$stack[] = array(&$val, &$curMerge[1][$key]);
+					} elseif ((int)$key === $key && isset($curMerge[1][$key])) {
+						$curMerge[1][] = $val;
+					} else {
+						$curMerge[1][$key] = $val;
+					}
 				}
+				unset($stack[$curKey]);
 			}
+			unset($curMerge);
 		}
 		return $return;
 	}
@@ -675,7 +704,7 @@ class Hash {
  * Checks to see if all the values in the array are numeric
  *
  * @param array $data The array to check.
- * @return boolean true if values are numeric, false otherwise
+ * @return bool true if values are numeric, false otherwise
  * @link http://book.cakephp.org/2.0/en/core-utility-libraries/hash.html#Hash::numeric
  */
 	public static function numeric(array $data) {
@@ -693,7 +722,7 @@ class Hash {
  * to get the dimensions of the array.
  *
  * @param array $data Array to count dimensions on
- * @return integer The number of dimensions in $data
+ * @return int The number of dimensions in $data
  * @link http://book.cakephp.org/2.0/en/core-utility-libraries/hash.html#Hash::dimensions
  */
 	public static function dimensions(array $data) {
@@ -718,7 +747,7 @@ class Hash {
  * number of dimensions in a mixed array.
  *
  * @param array $data Array to count dimensions on
- * @return integer The maximum number of dimensions in $data
+ * @return int The maximum number of dimensions in $data
  * @link http://book.cakephp.org/2.0/en/core-utility-libraries/hash.html#Hash::maxDimensions
  */
 	public static function maxDimensions(array $data) {
@@ -949,7 +978,7 @@ class Hash {
  * Normalizes an array, and converts it to a standard format.
  *
  * @param array $data List to normalize
- * @param boolean $assoc If true, $data will be converted to an associative array.
+ * @param bool $assoc If true, $data will be converted to an associative array.
  * @return array
  * @link http://book.cakephp.org/2.0/en/core-utility-libraries/hash.html#Hash::normalize
  */

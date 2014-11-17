@@ -39,7 +39,7 @@ class SchemaShell extends AppShell {
 /**
  * is this a dry run?
  *
- * @var boolean
+ * @var bool
  */
 	protected $_dry = null;
 
@@ -66,13 +66,10 @@ class SchemaShell extends AppShell {
 			list($this->params['plugin'], $splitName) = pluginSplit($name);
 			$name = $this->params['name'] = $splitName;
 		}
-
-		$defaultFile = 'schema.php';
-		if (empty($this->params['file'])) {
-			$this->params['file'] = $defaultFile;
-		}
-		if ($name && $this->params['file'] === $defaultFile) {
+		if ($name && empty($this->params['file'])) {
 			$this->params['file'] = Inflector::underscore($name);
+		} elseif (empty($this->params['file'])) {
+			$this->params['file'] = 'schema.php';
 		}
 		if (strpos($this->params['file'], '.php') === false) {
 			$this->params['file'] .= '.php';
@@ -92,7 +89,7 @@ class SchemaShell extends AppShell {
 				$name = $plugin;
 			}
 		}
-		$name = Inflector::classify($name);
+		$name = Inflector::camelize($name);
 		$this->Schema = new CakeSchema(compact('name', 'path', 'file', 'connection', 'plugin'));
 	}
 
@@ -295,10 +292,10 @@ class SchemaShell extends AppShell {
 		$Schema = $this->Schema->load($options);
 
 		if (!$Schema) {
-			$this->err(__d('cake_console', 'The chosen schema could not be loaded. Attempted to load:'));
-			$this->err(__d('cake_console', 'File: %s', $this->Schema->path . DS . $this->Schema->file));
-			$this->err(__d('cake_console', 'Name: %s', $this->Schema->name));
-			return $this->_stop();
+			$this->err(__d('cake_console', '<error>Error</error>: The chosen schema could not be loaded. Attempted to load:'));
+			$this->err(__d('cake_console', '- file: %s', $this->Schema->path . DS . $this->Schema->file));
+			$this->err(__d('cake_console', '- name: %s', $this->Schema->name));
+			return $this->_stop(2);
 		}
 		$table = null;
 		if (isset($this->args[1])) {
@@ -483,7 +480,6 @@ class SchemaShell extends AppShell {
 		);
 		$file = array(
 			'help' => __d('cake_console', 'File name to read and write.'),
-			'default' => 'schema.php'
 		);
 		$name = array(
 			'help' => __d('cake_console',

@@ -339,7 +339,7 @@ class SomePostsController extends AppController {
 /**
  * autoRender property
  *
- * @var boolean
+ * @var bool
  */
 	public $autoRender = false;
 
@@ -511,7 +511,7 @@ class TestFilterDispatcher extends DispatcherFilter {
  * TestFilterDispatcher::beforeDispatch()
  *
  * @param mixed $event
- * @return CakeResponse|boolean
+ * @return CakeResponse|bool
  */
 	public function beforeDispatch(CakeEvent $event) {
 		$event->stopPropagation();
@@ -1327,6 +1327,16 @@ class DispatcherTest extends CakeTestCase {
 		$response = $this->getMock('CakeResponse', array('send'));
 		$dispatcher->dispatch($request, $response);
 		$this->assertEquals('Dispatcher.afterDispatch', $request->params['eventName']);
+
+		$dispatcher = new TestDispatcher();
+		Configure::write('Dispatcher.filters', array(
+			'filterTest' => array('callable' => array($dispatcher, 'filterTest'), 'on' => 'before')
+		));
+
+		$request = new CakeRequest('/');
+		$response = $this->getMock('CakeResponse', array('send'));
+		$dispatcher->dispatch($request, $response);
+		$this->assertEquals('Dispatcher.beforeDispatch', $request->params['eventName']);
 
 		// Test that it is possible to skip the route connection process
 		$dispatcher = new TestDispatcher();

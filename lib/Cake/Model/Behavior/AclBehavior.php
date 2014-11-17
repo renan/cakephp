@@ -73,7 +73,7 @@ class AclBehavior extends ModelBehavior {
  * @param Model $model Model using this behavior.
  * @param string|array|Model $ref Array with 'model' and 'foreign_key', model object, or string value
  * @param string $type Only needed when Acl is set up as 'both', specify 'Aro' or 'Aco' to get the correct node
- * @return array
+ * @return array|null
  * @link http://book.cakephp.org/2.0/en/core-libraries/behaviors/acl.html#node
  */
 	public function node(Model $model, $ref = null, $type = null) {
@@ -94,7 +94,7 @@ class AclBehavior extends ModelBehavior {
  * Creates a new ARO/ACO node bound to this record
  *
  * @param Model $model Model using this behavior.
- * @param boolean $created True if this is a new record
+ * @param bool $created True if this is a new record
  * @param array $options Options passed from Model::save().
  * @return void
  */

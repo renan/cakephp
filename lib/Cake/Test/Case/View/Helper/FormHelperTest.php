@@ -36,7 +36,7 @@ class ContactTestController extends Controller {
 /**
  * uses property
  *
- * @var mixed null
+ * @var mixed
  */
 	public $uses = null;
 }
@@ -51,7 +51,7 @@ class Contact extends CakeTestModel {
 /**
  * useTable property
  *
- * @var boolean
+ * @var bool
  */
 	public $useTable = false;
 
@@ -142,7 +142,7 @@ class ContactTagsContact extends CakeTestModel {
 /**
  * useTable property
  *
- * @var boolean
+ * @var bool
  */
 	public $useTable = false;
 
@@ -207,7 +207,7 @@ class ContactTag extends Model {
 /**
  * useTable property
  *
- * @var boolean
+ * @var bool
  */
 	public $useTable = false;
 
@@ -234,7 +234,7 @@ class UserForm extends CakeTestModel {
 /**
  * useTable property
  *
- * @var boolean
+ * @var bool
  */
 	public $useTable = false;
 
@@ -274,7 +274,7 @@ class OpenidUrl extends CakeTestModel {
 /**
  * useTable property
  *
- * @var boolean
+ * @var bool
  */
 	public $useTable = false;
 
@@ -329,7 +329,7 @@ class ValidateUser extends CakeTestModel {
 /**
  * useTable property
  *
- * @var boolean
+ * @var bool
  */
 	public $useTable = false;
 
@@ -381,7 +381,7 @@ class ValidateProfile extends CakeTestModel {
 /**
  * useTable property
  *
- * @var boolean
+ * @var bool
  */
 	public $useTable = false;
 
@@ -440,7 +440,7 @@ class ValidateItem extends CakeTestModel {
 /**
  * useTable property
  *
- * @var boolean
+ * @var bool
  */
 	public $useTable = false;
 
@@ -489,7 +489,7 @@ class TestMail extends CakeTestModel {
 /**
  * useTable property
  *
- * @var boolean
+ * @var bool
  */
 	public $useTable = false;
 
@@ -513,7 +513,7 @@ class FormHelperTest extends CakeTestCase {
 /**
  * Do not load the fixtures by default
  *
- * @var boolean
+ * @var bool
  */
 	public $autoFixtures = false;
 
@@ -2695,7 +2695,7 @@ class FormHelperTest extends CakeTestCase {
 			array('label' => array('for' => "ContactMultiple")),
 			'Multiple',
 			'/label',
-			array('input' => array('type' => 'hidden', 'name' => "data[Contact][multiple]", 'value' => '', 'id' => "ContactMultiple")),
+			array('input' => array('type' => 'hidden', 'name' => "data[Contact][multiple]", 'value' => '', 'id' => "ContactMultiple", 'disabled' => 'disabled')),
 			array('div' => array('class' => 'checkbox')),
 			array('input' => array('type' => 'checkbox', 'name' => "data[Contact][multiple][]", 'value' => 1, 'disabled' => 'disabled', 'id' => "ContactMultiple1")),
 			array('label' => array('for' => "ContactMultiple1")),
@@ -5004,7 +5004,7 @@ class FormHelperTest extends CakeTestCase {
 			'Multiple',
 			'/label',
 			'input' => array(
-				'type' => 'hidden', 'name' => 'data[Contact][multiple]', 'value' => '', 'id' => 'ContactMultiple_'
+				'type' => 'hidden', 'name' => 'data[Contact][multiple]', 'value' => '', 'id' => 'ContactMultiple_', 'disabled' => 'disabled'
 			),
 			'select' => array(
 				'name' => 'data[Contact][multiple][]', 'disabled' => 'disabled', 'multiple' => 'multiple', 'id' => 'ContactMultiple'
@@ -9826,7 +9826,6 @@ class FormHelperTest extends CakeTestCase {
 	}
 
 /**
- *
  * @expectedException CakeException
  * @return void
  */

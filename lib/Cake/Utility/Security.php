@@ -42,8 +42,8 @@ class Security {
 /**
  * Get allowed minutes of inactivity based on security level.
  *
- * @deprecated Exists for backwards compatibility only, not used by the core
- * @return integer Allowed inactivity in minutes
+ * @deprecated 3.0.0 Exists for backwards compatibility only, not used by the core
+ * @return int Allowed inactivity in minutes
  */
 	public static function inactiveMins() {
 		switch (Configure::read('Security.level')) {
@@ -70,7 +70,7 @@ class Security {
  * Validate authorization hash.
  *
  * @param string $authKey Authorization hash
- * @return boolean Success
+ * @return bool Success
  */
 	public static function validateAuthKey($authKey) {
 		return true;
@@ -151,7 +151,7 @@ class Security {
 /**
  * Sets the cost for they blowfish hash method.
  *
- * @param integer $cost Valid values are 4-31
+ * @param int $cost Valid values are 4-31
  * @return void
  */
 	public static function setCost($cost) {
@@ -179,7 +179,7 @@ class Security {
  * @param string $text Encrypted string to decrypt, normal string to encrypt
  * @param string $key Key to use
  * @return string Encrypted/Decrypted string
- * @deprecated Will be removed in 3.0.
+ * @deprecated 3.0.0 Will be removed in 3.0.
  */
 	public static function cipher($text, $key) {
 		if (empty($key)) {
@@ -252,7 +252,7 @@ class Security {
  * The salt length should not exceed 27. The salt will be composed of
  * [./0-9A-Za-z]{$length}.
  *
- * @param integer $length The length of the returned salt
+ * @param int $length The length of the returned salt
  * @return string The generated salt
  */
 	protected static function _salt($length = 22) {

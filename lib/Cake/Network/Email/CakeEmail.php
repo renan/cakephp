@@ -40,14 +40,14 @@ class CakeEmail {
 /**
  * Line length - no should more - RFC 2822 - 2.1.1
  *
- * @var integer
+ * @var int
  */
 	const LINE_LENGTH_SHOULD = 78;
 
 /**
  * Line length - no must more - RFC 2822 - 2.1.1
  *
- * @var integer
+ * @var int
  */
 	const LINE_LENGTH_MUST = 998;
 
@@ -64,6 +64,13 @@ class CakeEmail {
  * @var string
  */
 	const MESSAGE_TEXT = 'text';
+
+/**
+ * Holds the regex pattern for email validation
+ *
+ * @var string
+ */
+	const EMAIL_PATTERN = '/^((?:[\p{L}0-9.!#$%&\'*+\/=?^_`{|}~-]+)*@[\p{L}0-9-.]+)$/ui';
 
 /**
  * Recipient of the email
@@ -133,7 +140,7 @@ class CakeEmail {
 /**
  * Message ID
  *
- * @var boolean|string True to generate, False to ignore, String with value
+ * @var bool|string
  */
 	protected $_messageId = true;
 
@@ -314,11 +321,13 @@ class CakeEmail {
 
 /**
  * Regex for email validation
- * If null, filter_var() will be used.
+ *
+ * If null, filter_var() will be used. Use the emailPattern() method
+ * to set a custom pattern.'
  *
  * @var string
  */
-	protected $_emailPattern = null;
+	protected $_emailPattern = self::EMAIL_PATTERN;
 
 /**
  * The class name used for email configuration.
@@ -515,7 +524,7 @@ class CakeEmail {
  * Charset setter/getter
  *
  * @param string $charset Character set.
- * @return string $this->charset
+ * @return string this->charset
  */
 	public function charset($charset = null) {
 		if ($charset === null) {
@@ -532,7 +541,7 @@ class CakeEmail {
  * HeaderCharset setter/getter
  *
  * @param string $charset Character set.
- * @return string $this->charset
+ * @return string this->charset
  */
 	public function headerCharset($charset = null) {
 		if ($charset === null) {
@@ -544,11 +553,13 @@ class CakeEmail {
 /**
  * EmailPattern setter/getter
  *
- * @param string $regex for email address validation
+ * @param string|bool|null $regex The pattern to use for email address validation,
+ *   null to unset the pattern and make use of filter_var() instead, false or
+ *   nothing to return the current value
  * @return string|$this
  */
-	public function emailPattern($regex = null) {
-		if ($regex === null) {
+	public function emailPattern($regex = false) {
+		if ($regex === false) {
 			return $this->_emailPattern;
 		}
 		$this->_emailPattern = $regex;
@@ -593,13 +604,14 @@ class CakeEmail {
  * @throws SocketException If email address does not validate
  */
 	protected function _validateEmail($email) {
-		$valid = (($this->_emailPattern !== null &&
-			preg_match($this->_emailPattern, $email)) ||
-			filter_var($email, FILTER_VALIDATE_EMAIL)
-		);
-		if (!$valid) {
-			throw new SocketException(__d('cake_dev', 'Invalid email: "%s"', $email));
+		if ($this->_emailPattern === null) {
+			if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+				return;
+			}
+		} elseif (preg_match($this->_emailPattern, $email)) {
+			return;
 		}
+		throw new SocketException(__d('cake_dev', 'Invalid email: "%s"', $email));
 	}
 
 /**
@@ -818,8 +830,8 @@ class CakeEmail {
 /**
  * Template and layout
  *
- * @param boolean|string $template Template name or null to not use
- * @param boolean|string $layout Layout name or null to not use
+ * @param bool|string $template Template name or null to not use
+ * @param bool|string $layout Layout name or null to not use
  * @return array|$this
  */
 	public function template($template = false, $layout = false) {
@@ -950,8 +962,8 @@ class CakeEmail {
 /**
  * Message-ID
  *
- * @param boolean|string $message True to generate a new Message-ID, False to ignore (not send in email), String to set as Message-ID
- * @return boolean|string|$this
+ * @param bool|string $message True to generate a new Message-ID, False to ignore (not send in email), String to set as Message-ID
+ * @return bool|string|$this
  * @throws SocketException
  */
 	public function messageId($message = null) {
@@ -1174,7 +1186,7 @@ class CakeEmail {
  * @param string $subject String of subject or null to use 'subject' from transport config
  * @param string|array $message String with message or array with variables to be used in render
  * @param string|array $transportConfig String to use config from EmailConfig or array with configs
- * @param boolean $send Send the email or just return the instance pre-configured
+ * @param bool $send Send the email or just return the instance pre-configured
  * @return CakeEmail Instance of CakeEmail
  * @throws SocketException
  */
@@ -1289,7 +1301,7 @@ class CakeEmail {
 		$this->headerCharset = null;
 		$this->_attachments = array();
 		$this->_config = array();
-		$this->_emailPattern = null;
+		$this->_emailPattern = self::EMAIL_PATTERN;
 		return $this;
 	}
 
@@ -1334,7 +1346,7 @@ class CakeEmail {
  * Wrap the message to follow the RFC 2822 - 2.1.1
  *
  * @param string $message Message to wrap
- * @param integer $wrapLength The line length
+ * @param int $wrapLength The line length
  * @return array Wrapped message
  */
 	protected function _wrap($message, $wrapLength = CakeEmail::LINE_LENGTH_MUST) {
